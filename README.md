@@ -11,7 +11,7 @@ An agent-driven repo. Clone it, open it in Claude Code, say "set me up". The age
 
 ## Quick start
 ```bash
-git clone https://github.com/<you>/job-agent-kit
+git clone https://github.com/LeiZiKang/job-agent-kit
 cd job-agent-kit
 claude
 # then say: set me up

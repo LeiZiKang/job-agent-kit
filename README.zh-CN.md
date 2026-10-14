@@ -9,7 +9,7 @@
 
 ## 快速开始
 ```bash
-git clone https://github.com/<you>/job-agent-kit
+git clone https://github.com/LeiZiKang/job-agent-kit
 cd job-agent-kit
 claude
 # 然后说：帮我配置
