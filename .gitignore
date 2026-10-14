@@ -1,0 +1,13 @@
+# Your private data (created by the onboard skill)
+/profile.md
+/outreach.md
+/config.json
+/tracker.json
+/board.html
+/examples/board.html
+/reports/
+/briefs/
+/resumes/
+/.agent-memory/
+.DS_Store
+__pycache__/
