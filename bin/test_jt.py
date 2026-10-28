@@ -1,5 +1,5 @@
 """CLI tests use an isolated repository; real tracker data is never mutated."""
-from datetime import date
+from datetime import date, timedelta
 import importlib.util
 import json
 import os
@@ -13,7 +13,7 @@ import unittest
 
 class TrackerCLI(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory()
+        self.temp = tempfile.TemporaryDirectory(prefix='.jt-test-', dir=Path(__file__).resolve().parent.parent)
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         (self.root / 'bin').mkdir()
@@ -274,6 +274,140 @@ class TrackerCLI(unittest.TestCase):
         self.assertLess(html.index('company-submitted</span>'), html.index('company-rejected</span>'))
         self.assertLess(html.index('company-submitted</span>'), html.index('company-closed</span>'))
         self.assertIn('<li class="entry muted">', html)
+
+    def apply(self, company='Example', job_id='1', *args, code=0):
+        return self.run_cli('apply', '--platform', 'boss', '--id', job_id, '--company', company,
+                            '--role', 'Engineer', '--evidence', 'greeting only; resume not delivered',
+                            '--next', 'wait', *args, code=code)
+
+    def test_company_aliases_guard_and_explicit_exception(self):
+        self.apply('Example (示例科技)', '1')
+        before = (self.root / 'tracker.json').read_bytes()
+        for query in [('EXAMPLE',), ('示例',), ('missing', 'example')]:
+            out = self.run_cli('company', *query).stdout
+            self.assertIn('resume not delivered', out)
+            self.assertIn('greeting alone', out)
+        self.assertIn('no applications', self.run_cli('company', 'Different').stdout)
+        self.apply('Example Ltd', '2', code=1)
+        self.apply('示例科技有限公司', '2', code=1)
+        self.apply('Example Ltd', '2', '--same-company-ok', '   ', code=1)
+        self.assertEqual(before, (self.root / 'tracker.json').read_bytes())
+        self.apply('Example Ltd', '2', '--same-company-ok', 'recipient has not received resume')
+        rows = json.loads((self.root / 'tracker.json').read_text())['applications']
+        self.assertIn('Same-company exception: recipient has not received resume', rows[1]['notes'])
+        self.apply('Exampleish', '3')
+        self.apply('XY', '4')
+        self.apply('XY Ltd', '5', code=1)
+
+    def test_replied_interview_source_and_funnel(self):
+        self.apply('Example', '1', '--source', 'scout')
+        self.apply('Second', '2')
+        self.run_cli('update', 'Example', '--interview', '2026-10-21')
+        row = json.loads((self.root / 'tracker.json').read_text())['applications'][0]
+        self.assertEqual((row['replied_at'], row['interview_at']), ('2026-10-21', '2026-10-21'))
+        before = (self.root / 'tracker.json').read_bytes()
+        self.run_cli('update', 'Second', '--replied', 'bad-date', code=1)
+        self.run_cli('update', 'Second', '--interview', '2026-02-30', code=1)
+        self.run_cli('update', 'Second', '--source', 'unknown', code=2)
+        self.assertEqual(before, (self.root / 'tracker.json').read_bytes())
+        out = self.run_cli('funnel').stdout
+        self.assertRegex(out, r'boss\s+2\s+1\s+50%\s+1')
+        self.assertRegex(out, r'Total\s+2\s+1\s+50%\s+1')
+        self.run_cli('update', 'Example', '--source', 'recruiter', '--replied', '2026-10-20')
+        out = self.run_cli('funnel', '--by', 'source').stdout
+        self.assertRegex(out, r'recruiter\s+1\s+1')
+        self.assertRegex(out, r'\(unrecorded\)\s+1\s+0')
+        self.run_cli('update', 'Second', '--replied', '--interview')
+        row = json.loads((self.root / 'tracker.json').read_text())['applications'][1]
+        self.assertEqual(row['replied_at'], date.today().isoformat())
+        self.assertEqual(row['interview_at'], date.today().isoformat())
+
+    def test_funnel_since_inclusive_and_read_only(self):
+        self.apply('Example', '1', '--source', 'pirate')
+        self.apply('Second', '2', '--source', 'self')
+        self.data = json.loads((self.root / 'tracker.json').read_text())
+        self.data['applications'][0]['applied_at'] = '2026-10-01'
+        self.data['applications'][1]['applied_at'] = '2026-10-02'
+        self.data['applications'][1]['status'] = 'rejected'
+        self.save()
+        before = (self.root / 'tracker.json').read_bytes()
+        out = self.run_cli('funnel', '--since', '2026-10-02', '--by', 'source').stdout
+        self.assertNotIn('pirate', out)
+        self.assertRegex(out, r'self\s+1\s+0\s+0%\s+0\s+1')
+        self.assertRegex(self.run_cli('funnel', '--since', '2999-01-01').stdout,
+                         r'Total\s+0\s+0\s+0%')
+        self.run_cli('funnel', '--since', 'bad-date', code=1)
+        self.assertEqual(before, (self.root / 'tracker.json').read_bytes())
+
+    def test_optional_fields_validation_and_legacy_compatibility(self):
+        self.apply()
+        self.data = json.loads((self.root / 'tracker.json').read_text())
+        row = self.data['applications'][0]
+        self.assertNotIn('source', row)
+        for field, bad in [('source', 'unknown'), ('source', []), ('source', None),
+                           ('replied_at', 0), ('interview_at', None), ('replied_at', '2026-02-30')]:
+            row[field] = bad
+            self.save()
+            self.run_cli('check', code=1)
+            del row[field]
+        self.save()
+        self.run_cli('check')
+
+    def test_sweep_boundary_status_read_only_and_idempotence(self):
+        fields = self.load_jt().FIELDS['applications']
+        def app(i, days, **extra):
+            row = dict.fromkeys(fields, '')
+            row.update(id=f'app-{i}', company=f'Example {i}', role='Engineer', platform='ats',
+                       status='submitted', evidence='confirmed', notes='keep existing note',
+                       applied_at=(date.today() - timedelta(days=days)).isoformat())
+            row.update(extra)
+            return row
+        self.data['applications'] = [app(1, 21), app(2, 30, replied_at='2026-10-01'), app(3, 20),
+            app(4, 40, status='interviewing'), app(5, 22, status='submitted_by_user'),
+            app(6, 40, status='rejected'), app(7, 40, interview_at='2026-10-01'),
+            app(8, 40, applied_at=''), app(9, 40, status='preparing'), app(10, -1)]
+        self.save()
+        before = (self.root / 'tracker.json').read_bytes()
+        for args in [('sweep', '--dry-run'), ('status',), ('status', '--full')]:
+            out = self.run_cli(*args).stdout
+            self.assertIn('can ghost: 2', out)
+            self.assertIn('app-1', out)
+            self.assertEqual(before, (self.root / 'tracker.json').read_bytes())
+        self.assertIn('marked ghosted: 2', self.run_cli('sweep').stdout)
+        rows = json.loads((self.root / 'tracker.json').read_text())['applications']
+        self.assertEqual([row['id'] for row in rows if row['status'] == 'ghosted'], ['app-1', 'app-5'])
+        self.assertIn('keep existing note;', rows[0]['notes'])
+        self.assertIn('21+ days', rows[0]['notes'])
+        before = (self.root / 'tracker.json').read_bytes()
+        self.assertIn('marked ghosted: 0', self.run_cli('sweep').stdout)
+        self.assertEqual(before, (self.root / 'tracker.json').read_bytes())
+        self.run_cli('update', 'app-1', '--replied', '--status', 'submitted')
+        self.assertIn('can ghost: 0', self.run_cli('sweep', '--dry-run').stdout)
+
+    def test_add_seen_update_handles_existing_application(self):
+        self.apply()
+        before = (self.root / 'tracker.json').read_bytes()
+        self.run_cli('add-seen', '--platform', 'boss', '--id', '1', '--company', 'Example',
+                     '--role', 'Engineer', '--verdict', 'applied', '--reason', 'confirmed',
+                     '--update', code=1)
+        self.assertEqual(before, (self.root / 'tracker.json').read_bytes())
+        self.add('--id', '42')
+        self.run_cli('apply', '--platform', 'liepin', '--id', '42', '--company', 'Second',
+                     '--role', 'Engineer', '--evidence', 'confirmed', '--next', 'wait')
+        self.add('--id', '42', '--update', '--verdict', 'stale')
+        data = json.loads((self.root / 'tracker.json').read_text())
+        self.assertEqual(data['seen_jobs'][0]['verdict'], 'stale')
+        self.assertEqual(data['applications'][1]['status'], 'submitted')
+
+    def test_read_only_commands_do_not_create_tracker(self):
+        path = self.root / 'tracker.json'
+        path.unlink()
+        for args in [('status',), ('status', '--full'), ('sweep', '--dry-run'),
+                     ('company', 'Example'), ('funnel',), ('seen', 'boss:1')]:
+            self.assertIn('run init first', self.run_cli(*args, code=1).stderr)
+            self.assertFalse(path.exists())
+        self.run_cli('init')
+        self.assertTrue(path.exists())
 
 
 if __name__ == '__main__':

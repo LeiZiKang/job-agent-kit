@@ -21,7 +21,8 @@ or runs a command. You do everything and show a summary at the end.
 4. Channels they use and are logged into (LinkedIn, Indeed, company ATS, BOSS, Liepin, email…).
 5. Which outward actions you may "do, then report" without asking each time (offer the T1-T6
    menu from `templates/outreach.md`; default: none).
-6. Optional: scheduled patrol? At what local times? (needs Codex + Mac awake)
+6. Agree on a manual start-day inbox preview check and a weekly review day. Do not recommend
+   unattended scheduling; the legacy option is documented in `contrib/` for explicit requests only.
 
 Push back on vague answers ("any frontend role") with a concrete question. Facts you can read
 from the resume, do not ask.
@@ -29,10 +30,11 @@ from the resume, do not ask.
 ## 3. Write files (from templates/, fill every placeholder)
 - `profile.md` from `templates/profile.md`: facts (never inflated), preferences, hard lines.
 - `outreach.md` from `templates/outreach.md`: only the pre-approved action types they picked.
-- `config.json`: `{"deadline": "YYYY-MM-DD" | null, "patrol_times": [...], "channels": [...]}`
-- `.agent-memory/` from `templates/agent-memory/` (INDEX.md, handoff.md, decisions/, findings/).
-- If patrol was requested: copy `templates/patrol-brief.md` to `briefs/patrol/<channel>.md` per
-  channel, then run `bin/schedule.sh install`.
+- `config.json`: `{"deadline": "YYYY-MM-DD" | null, "channels": [...]}`
+- `.agent-memory/` from `templates/agent-memory/` (INDEX.md, handoff.md, claude-feedback.md, decisions/, findings/).
+- Do not install a schedule by default. If explicitly requested after discussing read receipts
+  and expired sessions, use `contrib/README.md`; copy `templates/patrol-brief.md` into
+  `briefs/patrol/<channel>.md` and install via `contrib/schedule.sh install` only within that approval.
 - If the user wants a private git history for their data, this repo's `.gitignore` already
   excludes it; suggest a separate private repo instead of un-ignoring.
 

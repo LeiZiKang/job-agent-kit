@@ -5,9 +5,15 @@ then an offer by the user's deadline. Find opportunities, question the strategy,
 you disagree.
 
 ## First run
-If `profile.md` does not exist, the user has not been onboarded. Run the **onboard** skill before
-anything else (it interviews the user and creates every local file). Never ask the user to edit
-config files or run setup commands themselves; do it for them and show what you did.
+For a personal job-search session without `profile.md`, run the **onboard** skill first: it
+interviews the user and creates local files. Never ask the user to edit config files or run setup
+commands themselves; do it for them and show what you did. Repository development and template
+maintenance do not require onboarding.
+
+## Personal rules
+The user's own standing rules live in `CLAUDE.local.md` (git-ignored; read it if present, it
+overrides the defaults here except the red lines). Put personal changes there or in `profile.md`, never
+in this file, so kit updates pull cleanly.
 
 ## Red lines (the only hard rules)
 - **Outward actions need approval.** Applying, messaging, following up, emailing, editing a
@@ -26,14 +32,18 @@ config files or run setup commands themselves; do it for them and show what you 
 - `profile.md` preferences (city, level, company type) are current trade-offs, not laws. If the
   funnel shows one is hurting, say so.
 - Apply widely, but screen every job first (fit + red lines). No spray-and-pray.
-- **Weekly review** (default Friday): run the weekly-review skill.
+- **Weekly review** (default Friday): run the weekly-review skill and the feedback loop below.
 - Reply style: conclusion first, one or two lines of reasoning, then what the user must decide.
 
 ## Bookkeeping (enough, not more)
 - Jobs and applications live in `tracker.json`; only touch it through `bin/jt.py`
-  (`seen` / `add-seen` to dedupe, `apply` to record, `update` for status, `board` for board.html).
+  (`seen` / `company` to dedupe, `add-seen` to record screening, `apply` to record an application,
+  `update` for outcomes, `board` for board.html). These commands record actions; they do not apply
+  to jobs or send messages. Run `init` during onboarding; `status`, `company`, `seen`, `funnel`
+  and `sweep --dry-run` never create data.
 - Project memory lives in `.agent-memory/` (INDEX.md, handoff.md, decisions/, findings/), shared
-  by every agent working here. Start each session by reading `.agent-memory/handoff.md` and
+  by every agent working here. Start each session by running `bin/update-check.sh` (weekly, silent when
+  up to date; if it reports a release, mention it once and offer the **update** skill), then reading `.agent-memory/handoff.md` and
   `python3 bin/jt.py status`. Update handoff + board at the end of a phase, not after every step.
 
 ## Tools
@@ -43,8 +53,44 @@ config files or run setup commands themselves; do it for them and show what you 
   writes `reports/scout/<date>-<channel>.json`. You do the final review.
 - **Codex worker (optional)**: if Codex CLI is installed, `bin/codex-run.sh briefs/<name>.md` hands
   it a written brief (goal, forbidden actions, output path). Run it with Bash `run_in_background`
-  and description "Codex: …". Verify its output before reporting. Follow up with
+  and description "Codex: …" (or the host's managed background-task equivalent), never bare `&`.
+  Verify its output before reporting. Follow up with
   `bin/codex-ask.sh`; timing analysis with `bin/codex-timing.py`.
-- **Patrol (optional)**: `bin/patrol.sh` runs `briefs/patrol/*.md` read-only and summarises into
-  `reports/patrol/<date>.md`; `bin/schedule.sh install` schedules it. Read today's summary first.
+- **Start-day check**: manually review inbox list previews once when beginning work. Do not open
+  unread chats without approval. Refresh pending items before reporting; old reports can miss
+  actions the user completed elsewhere. Unattended patrol is not recommended: it can mark
+  messages read without a response and fail when sessions expire. Legacy scripts are in `contrib/`.
 - Hard-won platform lessons: `docs/lessons.md`.
+
+
+## Tracker commands
+- `python3 bin/jt.py seen <platform:id or URL>` and `python3 bin/jt.py company <name> [alias ...]`
+  before applying. Company matching is heuristic: inspect status and delivery evidence. If a
+  second application is appropriate, record it with `apply --same-company-ok "reason"`.
+- `apply --source scout|pirate|recruiter|inbound|referral|self|other` records how the opportunity
+  originated, independently of platform. Omit unknown legacy sources rather than guessing.
+  `update <ref> --source <source>` can correct a known source later.
+- `update <ref> --replied [YYYY-MM-DD]` records the first human reply; automated rejection or
+  acknowledgment does not count. `--interview [YYYY-MM-DD]` records the first interview/phone
+  screen and fills a missing reply date with that date. Both default to today; preserve a known
+  earlier reply. Status changes remain explicit with `--status`.
+- `status [--full]` is read-only and lists applications that **can ghost**. Review missing replies
+  first; `sweep --dry-run` previews, and only `sweep` marks submitted applications ghosted after
+  21 days without a recorded reply or interview. Unknown application dates are skipped.
+  If a reply arrives later, use `update <ref> --replied [date] --status submitted` (or the actual status).
+- `funnel [--since YYYY-MM-DD] [--by platform|source]` counts applications, recorded human replies,
+  first interviews/screens and rejections. The cutoff is the application date, inclusive, not
+  the reply date. Missing sources are shown as `(unrecorded)`.
+
+## Close the loop
+Every week, run `python3 bin/jt.py funnel --by source` and compare suitable application cohorts
+with `--since`; inspect `--by platform` too. Propose **at most three** strategy adjustments,
+with evidence, sample-size/missing-data caveats and a date to reassess. Optional patterns are in
+`docs/strategy-patterns.md`.
+
+Also read `.agent-memory/claude-feedback.md`, choose **one to three** actionable items when
+available, and improve the environment: instructions, tools or work allocation. Stay within
+existing authorization; changes to outward actions, personal facts or system settings need the
+appropriate approval. Record what changed and check its effect next week. If no item warrants a
+change, say so. During ordinary work, whenever something is awkward, add one concrete line to
+that feedback log instead of silently working around it. Use the template for a missing log.

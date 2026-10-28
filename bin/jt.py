@@ -16,6 +16,9 @@ ROOT = Path(__file__).resolve().parent.parent
 PLATFORMS = {'linkedin', 'indeed', 'boss', 'liepin', 'ats', 'email', 'referral', 'other'}
 STATUSES = {'preparing', 'submitted', 'submitted_by_user', 'interviewing',
             'offer', 'rejected', 'closed', 'ghosted'}
+SOURCES = {'scout', 'pirate', 'recruiter', 'inbound', 'referral', 'self', 'other'}
+GHOST_DAYS = 21
+
 VERDICTS = {'new', 'recommend', 'maybe', 'reject', 'applied', 'stale'}
 FIELDS = {
     'applications': 'id company role platform job_url platform_job_id status evidence applied_at last_checked_at next_action notes legacy_ref'.split(),
@@ -131,6 +134,14 @@ def validate(data, root=ROOT):
                 if row.get(field):
                     normalize_url(row[field])
             if group == 'applications':
+                for field in ('source', 'replied_at', 'interview_at'):
+                    if field in row and not isinstance(row[field], str):
+                        raise ValueError(label + ': ' + field + ' must be a string')
+                if row.get('source') and row['source'] not in SOURCES:
+                    raise ValueError(label + ': invalid source')
+                for field in ('replied_at', 'interview_at'):
+                    if row.get(field):
+                        date.fromisoformat(row[field])
                 if not row['id'] or row['id'] in unique_ids or row['status'] not in STATUSES:
                     raise ValueError(label + ': empty/duplicate application id or invalid status')
                 unique_ids.add(row['id'])
@@ -174,7 +185,51 @@ def atomic_write(path, text):
             os.unlink(temporary)
 
 
+def can_ghost(data, today=None):
+    today = today or date.today()
+    return [row for row in data['applications']
+            if row['status'] in {'submitted', 'submitted_by_user'}
+            and row['applied_at'] and not row.get('replied_at') and not row.get('interview_at')
+            and (today - date.fromisoformat(row['applied_at'])).days >= GHOST_DAYS]
+
+
+def sweep(data, today=None):
+    today = today or date.today()
+    rows = can_ghost(data, today)
+    for row in rows:
+        row['status'] = 'ghosted'
+        note = f'{today.isoformat()} marked ghosted: {GHOST_DAYS}+ days without a recorded reply'
+        row['notes'] = (row['notes'] + '; ' if row['notes'] else '') + note
+    return rows
+
+
+def funnel(data, since='', by='platform'):
+    if since:
+        since = date.fromisoformat(since).isoformat()
+    rows = {'Total': Counter()}
+    for app in data['applications']:
+        if since and (not app['applied_at'] or app['applied_at'] < since):
+            continue
+        for key in (app.get(by) or '(unrecorded)', 'Total'):
+            counts = rows.setdefault(key, Counter())
+            counts['applied'] += 1
+            counts['replied'] += bool(app.get('replied_at'))
+            counts['interviews'] += bool(app.get('interview_at'))
+            counts['rejected'] += app['status'] == 'rejected'
+    print(f"{by.title():<16}{'Applied':>9}{'Replied':>9}{'Reply rate':>12}{'Interviews':>12}{'Rejected':>10}")
+    for key, counts in sorted(rows.items(), key=lambda item: (item[0] == 'Total', -item[1]['applied'], item[0])):
+        rate = counts['replied'] / counts['applied'] if counts['applied'] else 0
+        print(f"{key:<16}{counts['applied']:>9}{counts['replied']:>9}{rate:>12.0%}"
+              f"{counts['interviews']:>12}{counts['rejected']:>10}")
+
+
 def status(data, full=False):
+    candidates = can_ghost(data)
+    if candidates:
+        print(f'can ghost: {len(candidates)} ({GHOST_DAYS}+ days without a recorded reply). '
+              'Check for missing replies with update --replied before running sweep.')
+        for row in candidates:
+            print(f"  {row['id']} | {row['company']} | {row['applied_at']}")
     apps = data['applications']
     counts = Counter(x['status'] for x in apps)
     print(f"applications: {len(apps)} | " + ', '.join(f'{k}={v}' for k, v in sorted(counts.items())))
@@ -443,6 +498,46 @@ def handoff_sections(root):
     return [(title, '\n'.join(lines)) for title, lines in sections]
 
 
+COMPANY_STOP = {'china', 'shanghai', 'shenzhen', 'beijing', 'senior', 'engineer', 'software',
+                'technology', 'technologies', 'limited', 'group', 'global', 'inc', 'ltd', 'co',
+                'the', 'systems', 'system', 'solutions', 'services', 'international', 'holdings',
+                'digital', 'labs', 'team', 'company', 'boss', 'saas', 'linkedin', 'liepin',
+                'maimai', 'remote', 'startup'}
+COMPANY_STOP_CN = ('有限公司', '科技', '技术', '信息', '网络', '上海', '深圳', '北京', '中国',
+                   '团队', '猎头', '匿名', '代招', '某')
+
+
+def company_terms(name):
+    """Extract possible brand names, including aliases in parentheses; not an entity resolver."""
+    terms = {word.casefold() for word in re.findall(r'[A-Za-z][A-Za-z.&-]+', name)
+             if word.casefold() not in COMPANY_STOP}
+    for segment in re.findall(r'[\u4e00-\u9fff]{2,}', re.split(r'[（(]', name, 1)[0]):
+        for stop in COMPANY_STOP_CN:
+            segment = segment.replace(stop, ' ')
+        terms.update(term for term in segment.split() if len(term) >= 2)
+    return terms or {name.strip().casefold()}
+
+
+def company_hits(data, terms):
+    def matches(term, text):
+        if not term.strip():
+            return False
+        if re.fullmatch(r'[a-z0-9 .&-]+', term):
+            return bool(re.search(r'(?<![a-z0-9])' + re.escape(term) + r'(?![a-z0-9])', text))
+        return term in text
+    return [row for row in data['applications']
+            if any(matches(term.casefold(), (row['company'] + ' ' + row['role']).casefold())
+                   for term in terms)]
+
+
+def print_company_hits(hits, out=sys.stdout):
+    for row in hits:
+        print(f"- {row['id']} [{row['status']}] {row['applied_at']} {row['company']} | {row['role']}"
+              f"\n    evidence: {row['evidence']}\n    next: {row['next_action']}", file=out)
+    if hits:
+        print('Check evidence: did the resume actually reach the recipient? A greeting alone is not delivery.', file=out)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
@@ -450,7 +545,12 @@ def main(argv=None):
         sub.add_parser(command)
     sub.add_parser('init', help='create an empty tracker.json if missing')
     sub.add_parser('demo', help='render board.html from examples/ without touching your data')
-    sub.add_parser('status').add_argument('--full', action='store_true')
+    sub.add_parser('status', help='read-only summary, including applications that can ghost').add_argument('--full', action='store_true')
+    sub.add_parser('sweep', help='explicitly mark old unreplied applications ghosted').add_argument('--dry-run', action='store_true')
+    sub.add_parser('company', help='check company names and known aliases before applying').add_argument('name', nargs='+')
+    fn = sub.add_parser('funnel', help='recorded replies and interviews by application cohort')
+    fn.add_argument('--since', default='', metavar='DATE', help='include applications on or after this date')
+    fn.add_argument('--by', choices=['platform', 'source'], default='platform')
     sub.add_parser('seen').add_argument('key')
     add = sub.add_parser('add-seen')
     add.add_argument('--platform', choices=sorted(PLATFORMS), required=True)
@@ -467,11 +567,19 @@ def main(argv=None):
     for flag in ('company', 'role', 'evidence', 'next'):
         app.add_argument('--' + flag, required=True)
     app.add_argument('--status', choices=sorted(STATUSES), default='submitted')
+    app.add_argument('--source', choices=sorted(SOURCES), default='')
+    app.add_argument('--same-company-ok', default='', metavar='REASON',
+                     help='reason to proceed after checking existing delivery evidence')
     upd = sub.add_parser('update', help='update an application; ref is its id or a unique company/role substring')
     upd.add_argument('ref')
     upd.add_argument('--status', choices=sorted(STATUSES))
     upd.add_argument('--next')
     upd.add_argument('--note', help='append to notes')
+    upd.add_argument('--source', choices=sorted(SOURCES))
+    upd.add_argument('--replied', nargs='?', const='today', metavar='DATE',
+                     help='first human reply date, default today; excludes automated rejections')
+    upd.add_argument('--interview', nargs='?', const='today', metavar='DATE',
+                     help='first interview or phone screen date, default today')
     args = parser.parse_args(argv)
     try:
         if args.command == 'demo':
@@ -480,6 +588,9 @@ def main(argv=None):
             print('open examples/board.html')
             return 0
         tracker = ROOT / 'tracker.json'
+        if not tracker.exists() and (args.command in {'status', 'company', 'seen', 'funnel'}
+                                     or (args.command == 'sweep' and args.dry_run)):
+            raise ValueError('tracker.json is missing; run init first')
         if not tracker.exists():
             atomic_write(tracker, json.dumps(dict(version=1, updated_at=now(), applications=[],
                                                   seen_jobs=[], contacts=[]), indent=2) + '\n')
@@ -498,6 +609,9 @@ def main(argv=None):
             key = make_key(args.platform, args.id, args.url)
             existing = lookup(data, key) or (lookup(data, args.url) if args.url else [])
             if existing and args.update:
+                existing = [row for row in existing if 'key' in row]
+                if not existing:
+                    raise ValueError('application already exists; use update for its status')
                 for row in existing:
                     row['verdict'] = args.verdict
                     row['reason'] = f"{args.reason}; {row['reason']}"
@@ -516,9 +630,30 @@ def main(argv=None):
             validate(data)
             atomic_write(ROOT / 'tracker.json', json.dumps(data, ensure_ascii=False, indent=2) + '\n')
             print('added ' + key)
+        elif args.command == 'company':
+            hits = company_hits(data, args.name)
+            print_company_hits(hits)
+            if not hits:
+                print('no applications found for this company')
         elif args.command == 'status':
             status(data, args.full)
+        elif args.command == 'sweep':
+            rows = can_ghost(data) if args.dry_run else sweep(data)
+            if rows and not args.dry_run:
+                data['updated_at'] = now()
+                validate(data)
+                atomic_write(tracker, json.dumps(data, ensure_ascii=False, indent=2) + '\n')
+            print(f"{'can ghost' if args.dry_run else 'marked ghosted'}: {len(rows)}")
+            for row in rows:
+                print(f"  {row['id']} | {row['company']} | {row['applied_at']}")
+        elif args.command == 'funnel':
+            funnel(data, args.since, args.by)
         elif args.command == 'apply':
+            hits = company_hits(data, company_terms(args.company))
+            if hits and not args.same_company_ok.strip():
+                print('Existing application at this company. Review evidence, then use --same-company-ok "reason" if appropriate.', file=sys.stderr)
+                print_company_hits(hits, sys.stderr)
+                return 1
             today = date.today().isoformat()
             ref = re.sub(r'[^A-Za-z0-9]+', '-', args.id or urlsplit(args.url).path)[-40:].strip('-') or 'x'
             app_id = f"app-{today.replace('-', '')}-{args.platform}-{ref}"
@@ -528,7 +663,9 @@ def main(argv=None):
             data['applications'].append(dict(id=app_id, company=args.company, role=args.role, platform=args.platform,
                 job_url=normalize_url(args.url) if args.url else '', platform_job_id=args.id, status=args.status,
                 evidence=args.evidence, applied_at=today, last_checked_at=now(), next_action=args.next,
-                notes=args.notes, legacy_ref=''))
+                notes='; '.join(part for part in (args.notes,
+                    'Same-company exception: ' + args.same_company_ok.strip() if args.same_company_ok.strip() else '') if part),
+                legacy_ref='', **({'source': args.source} if args.source else {})))
             data['updated_at'] = now()
             validate(data)
             atomic_write(ROOT / 'tracker.json', json.dumps(data, ensure_ascii=False, indent=2) + '\n')
@@ -539,6 +676,14 @@ def main(argv=None):
                 row['status'] = args.status
             if args.next:
                 row['next_action'] = args.next
+            if args.source:
+                row['source'] = args.source
+            for flag, field in (('replied', 'replied_at'), ('interview', 'interview_at')):
+                value = getattr(args, flag)
+                if value:
+                    row[field] = date.today().isoformat() if value == 'today' else date.fromisoformat(value).isoformat()
+            if row.get('interview_at') and not row.get('replied_at'):
+                row['replied_at'] = row['interview_at']
             if args.note:
                 row['notes'] = (row['notes'] + '; ' if row['notes'] else '') + f'{date.today().isoformat()} {args.note}'
             row['last_checked_at'] = data['updated_at'] = now()

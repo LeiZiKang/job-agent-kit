@@ -1,4 +1,6 @@
-# Patrol brief: {{channel}} (read-only)
+# Manual inbox preview brief: {{channel}} (read-only)
+
+Legacy unattended execution is opt-in only; see `contrib/README.md`.
 
 ## Goal
 Check the inbox/messages of {{channel}} (already logged in, in the browser) for changes since the
@@ -19,10 +21,12 @@ One tool call per screen; avoid many tiny steps.
 Write `reports/patrol/{{channel}}-result.md`:
 
 ```
-# {{channel}} patrol: <date from network, not local clock>
+# {{channel}} patrol: <date and timezone used; report uncertainty if the clock appears wrong>
 ## Changes
 - <sender | company | one-line preview | read/unread | date>   (or "none")
 ## Blocked
 - <captcha / login / other, or "none">
 ```
-The `## Changes` section is required; the scheduler extracts it.
+The `## Changes` section is required for the optional legacy patrol extractor.
+Write a partial result early; bound all waits by {{timeout}}. Report incomplete coverage and
+login expiry. Never use a detached `&` process.

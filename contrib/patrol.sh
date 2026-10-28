@@ -1,7 +1,8 @@
 #!/bin/zsh
-# Read-only inbox patrol. Runs every brief in briefs/patrol/*.md through Codex and appends each
+# Legacy, opt-in only: not recommended for unattended use.
+# Inbox preview patrol. Runs every brief in briefs/patrol/*.md through Codex and appends each
 # result's "## Changes" section to reports/patrol/<date>.md for the lead agent to review.
-# Scheduled by bin/schedule.sh; safe to run by hand.
+# Scheduled only on explicit request; inspect read-receipt behavior before use.
 cd "$(dirname "$0")/.."
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 lock="${TMPDIR:-/tmp}/job-agent-kit-patrol.lock"
