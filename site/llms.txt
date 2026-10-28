@@ -1,0 +1,22 @@
+# job-agent-kit
+
+> An AI agent workflow kit for Claude Code and Codex that scouts, screens, tracks and drafts for your job search, with your approval for outward actions.
+
+MIT-licensed, version 0.2.0. Python 3.9+ powers the offline tracker. Personal files are local and git-ignored. No auto-apply bots are included. Exact targets and text require approval unless the user has pre-approved the action type. Platform terms still apply. The optional full-access worker is not a technical sandbox.
+
+## Start here
+- [English README](https://github.com/LeiZiKang/job-agent-kit/blob/main/README.md): Quick start, requirements, safety and qualified real-use figures.
+- [Chinese README](https://github.com/LeiZiKang/job-agent-kit/blob/main/README.zh-CN.md): Simplified Chinese introduction and setup.
+- [Agent operating manual](https://github.com/LeiZiKang/job-agent-kit/blob/main/CLAUDE.md): Red lines, tracker commands and weekly review.
+
+## Workflow and boundaries
+- [Architecture](https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/architecture.md): Lead agent, scouts, optional worker, tracker and execution boundary.
+- [Platform lessons](https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/lessons.md): Observations from real use, not platform guarantees.
+- [Strategy patterns](https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/strategy-patterns.md): Optional hypotheses to review against the user's own outcomes.
+
+## Updates
+- [Changelog](https://github.com/LeiZiKang/job-agent-kit/blob/main/CHANGELOG.md): Release history and unreleased work; installation requires approval.
+
+## Optional
+- [Homepage in Markdown](https://leizikang.github.io/job-agent-kit/index.md): Concise workflow overview and FAQ.
+- [Full documentation](https://leizikang.github.io/job-agent-kit/llms-full.txt): Generated English README, changelog, architecture, lessons and strategy patterns.

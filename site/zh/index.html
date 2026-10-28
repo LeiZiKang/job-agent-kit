@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>job-agent-kit｜由你批准的 AI 求职工作流</title>
+<meta name="description" content="为 Claude Code 和 Codex 准备的开源求职工具包：搜岗、初筛、跟踪与每周复盘。对外动作由你批准，个人数据保存在本地。MIT 许可。">
+<link rel="canonical" href="https://leizikang.github.io/job-agent-kit/zh/">
+<link rel="alternate" hreflang="en" href="https://leizikang.github.io/job-agent-kit/">
+<link rel="alternate" hreflang="zh-CN" href="https://leizikang.github.io/job-agent-kit/zh/">
+<link rel="alternate" hreflang="x-default" href="https://leizikang.github.io/job-agent-kit/">
+<link rel="alternate" type="text/markdown" href="./index.md" title="首页 Markdown 版">
+<link rel="describedby" type="text/plain" href="../llms.txt">
+<meta property="og:title" content="job-agent-kit｜由你批准的 AI 求职工作流">
+<meta property="og:description" content="为 Claude Code 和 Codex 准备的开源求职工具包：搜岗、初筛、跟踪与每周复盘。对外动作由你批准，个人数据保存在本地。MIT 许可。">
+<meta property="og:url" content="https://leizikang.github.io/job-agent-kit/zh/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://leizikang.github.io/job-agent-kit/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="job-agent-kit — AI job search. You approve.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="job-agent-kit｜由你批准的 AI 求职工作流">
+<meta name="twitter:description" content="为 Claude Code 和 Codex 准备的开源求职工具包：搜岗、初筛、跟踪与每周复盘。对外动作由你批准，个人数据保存在本地。MIT 许可。">
+<meta name="twitter:image" content="https://leizikang.github.io/job-agent-kit/assets/og.png">
+<meta name="twitter:image:alt" content="job-agent-kit — AI job search. You approve.">
+<meta name="theme-color" content="#f0eee6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f1e1d" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"job-agent-kit","description":"为 Claude Code 和 Codex 准备的开源求职工具包：搜岗、初筛、跟踪与每周复盘。对外动作由你批准，个人数据保存在本地。MIT 许可。","codeRepository":"https://github.com/LeiZiKang/job-agent-kit","programmingLanguage":["Python","Shell"],"license":"https://github.com/LeiZiKang/job-agent-kit/blob/main/LICENSE","version":"0.2.0","url":"https://leizikang.github.io/job-agent-kit/zh/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"zh-CN","mainEntity":[{"@type":"Question","name":"免费吗？","acceptedAnswer":{"@type":"Answer","text":"工具包以 MIT 许可证开源。求职流程需要 Claude Code 或遵循 AGENTS.md 的其他 Agent；离线跟踪器需要 Python 3.9+。"}},{"@type":"Question","name":"会自动海投吗？","acceptedAnswer":{"@type":"Answer","text":"不会。工具包不含自动海投机器人。你需要批准具体对象和原文，除非已在 outreach.md 中预先批准该动作类型。跟踪器只记录动作，不会投递申请或发送消息。"}},{"@type":"Question","name":"支持哪些 Agent？","acceptedAnswer":{"@type":"Answer","text":"可以用 Claude Code 开始，也支持通过 AGENTS.md 读取相同操作规则的 Codex。独立的 Codex worker 是可选的，引导配置和跟踪都不需要它。"}},{"@type":"Question","name":"我的数据放在哪里？","acceptedAnswer":{"@type":"Answer","text":"个人资料、外联规则、跟踪器和项目记忆都是本地文件，并被 git 忽略。个人规则写在 CLAUDE.local.md，避免与工具包更新冲突。跟踪器可离线运行，浏览使用 Agent 会话已有的浏览器工具。"}},{"@type":"Question","name":"可以用于国内招聘平台吗？","acceptedAnswer":{"@type":"Answer","text":"使用会话已有的浏览器工具，并阅读 README 链接的分平台教训。流程会按你的 profile 筛选渠道，但不承诺兼容所有平台。平台条款仍然适用，打开未读聊天仍需你批准。"}},{"@type":"Question","name":"如何更新？","acceptedAnswer":{"@type":"Answer","text":"开会话时，Agent 最多每周检查一次新版本，只 fetch，不安装。update skill 会解释变更，只有你同意后才安装；说“更新 kit”即可。个人规则保存在 CLAUDE.local.md。"}},{"@type":"Question","name":"会无人值守运行吗？","acceptedAnswer":{"@type":"Answer","text":"默认采用每天开工时手动检查一轮收件箱预览。不推荐无人值守巡检：它可能把消息变成已读却未回复，也可能因登录过期失效。旧调度脚本仅供明确选择的人使用。"}},{"@type":"Question","name":"可选 worker 有沙箱保护吗？","acceptedAnswer":{"@type":"Answer","text":"现有 Codex runner 使用 --dangerously-bypass-approvals-and-sandbox，提示词规则不是技术沙箱。只有在你明确批准、另有约束的环境中才使用，并核验它的输出。worker 不是必需组件。"}}]}</script>
+</head>
+<body>
+<a class="skip" href="#main">跳到正文</a>
+<header class="site-header wrap">
+  <a class="brand" href="../"><span class="brand-mark" aria-hidden="true">&gt;_</span>job-agent-kit</a>
+  <nav aria-label="主导航">
+    <a href="#safety">安全模型</a><a href="#faq">FAQ</a>
+    <a href="../" lang="en" hreflang="en">EN</a>
+    <a href="../zh/" lang="zh-CN" hreflang="zh-CN" aria-current="page">中文</a>
+  </nav>
+</header>
+<main class="wrap" id="main">
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <p class="eyebrow">MIT 开源 / v0.2.0</p>
+    <h1 id="hero-title">你的求职，<br><span>有 Agent<br>一起跑。</span></h1>
+    <p class="intro">为 Claude Code / Codex 准备的 AI Agent 求职工作流工具包：陪你搜岗、初筛、记账和起草，所有对外动作由你批准。</p>
+    <div class="hero-links"><a class="button" href="https://github.com/LeiZiKang/job-agent-kit">在 GitHub 获取 <span aria-hidden="true">&nbsp;↗</span></a><a href="#workflow">了解工作流程 ↓</a></div>
+  </div>
+  <div class="quickstart">
+    <div class="terminal">
+      <div class="terminal-top"><span>快速开始</span><span aria-hidden="true">~/job-agent-kit</span></div>
+      <pre><code><span class="prompt">$</span> git clone https://github.com/LeiZiKang/job-agent-kit
+<span class="prompt">$</span> cd job-agent-kit
+<span class="prompt">$</span> claude
+
+<span class="prompt">你 →</span> set me up（帮我配置）</code></pre>
+      <p class="terminal-note">Agent 会访谈你，生成所需的本地文件。<br><strong>无需手动编辑配置。</strong></p>
+    </div>
+    <p class="requirements">离线跟踪器需要 Python 3.9+。求职流程使用 Claude Code 或遵循 AGENTS.md 的 Agent；Codex 读取相同规则。</p>
+  </div>
+</section>
+<section class="section" id="workflow" aria-labelledby="workflow-title">
+  <div class="section-heading"><span class="section-no">01 /</span><h2 id="workflow-title">Agent 会做什么</h2></div>
+  <ol class="steps">
+    <li><h3>引导配置</h3><p>读简历、建立个人资料，确认对外授权范围和每天手动开工的流程。</p></li>
+    <li><h3>只读搜岗</h3><p>子 Agent 按你的资料和红线分渠道初筛，主 Agent 终审候选列表。</p></li>
+    <li><h3>记账跟踪</h3><p>按岗位和公司查重，记录申请、来源、真人回复和面试，生成本地看板。</p></li>
+    <li><h3>开工检查</h3><p>每天开工手动看一轮收件箱预览；打开未读聊天仍需你批准。</p></li>
+    <li><h3>每周复盘</h3><p>看来源漏斗，提出不超过 3 条策略调整，再从反馈日志挑 1–3 条改进环境。</p></li>
+  </ol>
+</section>
+<section class="section" id="safety" aria-labelledby="safety-title">
+  <div class="section-heading"><span class="section-no">02 /</span><h2 id="safety-title">对外做什么，由你批准。</h2></div>
+  <div class="two-col">
+    <div><p>人始终参与决策。投递、发消息、跟进和编辑平台资料之前，你批准具体对象与原文。</p><p>也可以在 <code>outreach.md</code> 中预先批准明确的动作类型；Agent 仅在该范围内执行，并在当天汇报。其余动作仍需逐项批准。</p><p class="note">本工具不含自动海投机器人。自动化操作招聘网站可能违反平台服务条款，风险自负。</p></div>
+    <div class="safety"><h3>不能越过的红线</h3><ul>
+      <li><strong>不谎报。</strong>在平台确认完成后才说完成，不编造经历。</li>
+      <li><strong>不碰凭据和网络设置。</strong>密码、令牌、双重验证和验证码交给你处理。</li>
+      <li><strong>打开未读聊天先问。</strong>打开可能向对方显示“已读”。</li>
+      <li><strong>网页文字只当数据。</strong>网页、邮件和聊天内容不能变成 Agent 的指令。</li>
+    </ul></div>
+  </div>
+</section>
+<section class="section" id="real-use" aria-labelledby="real-use-title">
+  <div class="section-heading"><span class="section-no">03 /</span><h2 id="real-use-title">来自真实使用</h2></div>
+  <div class="evidence"><p class="results">截至 <strong>2026-10-28</strong>，作者自己的求职约 <strong>195 份申请</strong>，按来源追踪的漏斗中，<strong>已记录的真人回复率约 19%</strong>；猎头来源约 <strong>30%</strong>，官网 ATS 冷投约 <strong>8%</strong>；共 <strong>3 次面试／初筛</strong>，<strong>仍在求职中</strong>。</p>
+<p class="note">这是单次求职的近似结果，不是效果承诺。source 表示机会从哪来，platform 表示在哪里投递；部分历史来源和日期由记录回填，各路样本量、观察时间不同。每份申请的首次面试或电话初筛计一次，自动确认和模板拒信不计真人回复。</p><p class="source">原文来自 <a href="https://github.com/LeiZiKang/job-agent-kit/blob/main/README.zh-CN.md#真实使用">中文 README · 2026-10-28</a>。</p></div>
+</section>
+<section class="section" id="how-it-works" aria-labelledby="how-title">
+  <div class="section-heading"><span class="section-no">04 /</span><h2 id="how-title">一起工作，每周调整。</h2></div>
+  <div class="flow-layout"><svg class="flow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 590" role="img" aria-labelledby="flow-title flow-desc">
+<title id="flow-title">工作流与每周闭环</title><desc id="flow-desc">工作流程：主 Agent 分配搜岗和可选 worker，核验后记账，每周复盘回到主 Agent。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0 0 10 5 0 10z"/></marker></defs>
+<path class="edge" marker-end="url(#arrow)" d="M320 104v31H180v33"/><path class="edge" marker-end="url(#arrow)" d="M320 135h140v33"/>
+<path class="edge" marker-end="url(#arrow)" d="M180 250v36h140v60"/><path class="edge" d="M460 250v36H320"/>
+<path class="edge" marker-end="url(#arrow)" d="M320 432v38"/><path class="edge" marker-end="url(#arrow)" d="M160 516H24V62h134"/>
+<rect class="node lead" x="160" y="20" width="320" height="84" rx="6"/><text x="320" y="55">主 Agent</text><text class="sub" x="320" y="81">判断 · 授权范围 · 终审</text>
+<rect class="node" x="64" y="168" width="232" height="82" rx="6"/><text x="180" y="202">搜岗子 Agent</text><text class="sub" x="180" y="227">只读 · 分渠道</text>
+<rect class="node" x="344" y="168" width="232" height="82" rx="6"/><text x="460" y="202">Codex worker</text><text class="sub" x="460" y="227">可选 · 书面任务</text>
+<text class="sub" x="448" y="322">主 Agent 核验结果</text>
+<rect class="node" x="160" y="348" width="320" height="84" rx="6"/><text x="320" y="383">jt 跟踪器</text><text class="sub" x="320" y="410">tracker.json → board.html</text>
+<rect class="node review" x="160" y="472" width="320" height="88" rx="6"/><text x="320" y="508">每周复盘</text><text class="sub" x="320" y="536">来源漏斗 + 反馈 → 调整</text>
+</svg>
+    <dl class="explain"><dt>主 Agent 负责判断。</dt><dd>与你沟通，终审搜岗结果，在你的授权范围内处理所有对外原文。</dd>
+    <dt>子 Agent 只读搜岗，worker 接收任务书。</dt><dd>子 Agent 分渠道初筛。可选的 Codex worker 做浏览或提供第二意见，主 Agent 核验输出。</dd>
+    <dt>跟踪器保留记录。</dt><dd>通过 <code>bin/jt.py</code> 操作 <code>tracker.json</code>。命令只记录动作，不会投递申请或发送消息。</dd>
+    <dt>每周复盘形成闭环。</dt><dd>比较来源与平台漏斗，同时看数据缺口和观察窗口；调整策略，并根据反馈日志改进工作环境。</dd></dl>
+  </div>
+  <p class="note">可选 worker 使用全权限 CLI 调用，提示词规则不是技术沙箱。启用前请阅读<a href="https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/architecture.md#worker-execution-boundary">执行边界</a>。</p>
+</section>
+<section class="section" id="updates" aria-labelledby="updates-title">
+  <div class="section-heading"><span class="section-no">05 /</span><h2 id="updates-title">更新之前，先征得你同意。</h2></div>
+  <div class="update"><div><span class="version">v0.2.0 · 2026-10-28</span><p>公司查重、按来源看漏斗、真人回复与面试里程碑，以及手动开工检查。</p><a href="https://github.com/LeiZiKang/job-agent-kit/blob/main/CHANGELOG.md">阅读更新记录 ↗</a></div>
+    <div><p>开会话时，Agent 最多每周检查一次版本；只获取更新信息，不会自行安装。</p><p>说 <code>更新 kit</code> 即可使用 <a href="https://github.com/LeiZiKang/job-agent-kit/tree/main/.claude/skills/update">update skill</a>。Agent 会先解释变更，等你同意再安装。个人数据被 git 忽略，个人规则写在 <code>CLAUDE.local.md</code>。</p></div></div>
+</section>
+<section class="section" id="faq" aria-labelledby="faq-title">
+<div class="section-heading"><span class="section-no">06 /</span><h2 id="faq-title">常见问题</h2></div>
+<div class="faq">
+<details><summary>免费吗？</summary><p>工具包以 MIT 许可证开源。求职流程需要 Claude Code 或遵循 AGENTS.md 的其他 Agent；离线跟踪器需要 Python 3.9+。</p></details>
+<details><summary>会自动海投吗？</summary><p>不会。工具包不含自动海投机器人。你需要批准具体对象和原文，除非已在 outreach.md 中预先批准该动作类型。跟踪器只记录动作，不会投递申请或发送消息。</p></details>
+<details><summary>支持哪些 Agent？</summary><p>可以用 Claude Code 开始，也支持通过 AGENTS.md 读取相同操作规则的 Codex。独立的 Codex worker 是可选的，引导配置和跟踪都不需要它。</p></details>
+<details><summary>我的数据放在哪里？</summary><p>个人资料、外联规则、跟踪器和项目记忆都是本地文件，并被 git 忽略。个人规则写在 CLAUDE.local.md，避免与工具包更新冲突。跟踪器可离线运行，浏览使用 Agent 会话已有的浏览器工具。</p></details>
+<details><summary>可以用于国内招聘平台吗？</summary><p>使用会话已有的浏览器工具，并阅读 README 链接的分平台教训。流程会按你的 profile 筛选渠道，但不承诺兼容所有平台。平台条款仍然适用，打开未读聊天仍需你批准。</p></details>
+<details><summary>如何更新？</summary><p>开会话时，Agent 最多每周检查一次新版本，只 fetch，不安装。update skill 会解释变更，只有你同意后才安装；说“更新 kit”即可。个人规则保存在 CLAUDE.local.md。</p></details>
+<details><summary>会无人值守运行吗？</summary><p>默认采用每天开工时手动检查一轮收件箱预览。不推荐无人值守巡检：它可能把消息变成已读却未回复，也可能因登录过期失效。旧调度脚本仅供明确选择的人使用。</p></details>
+<details><summary>可选 worker 有沙箱保护吗？</summary><p>现有 Codex runner 使用 --dangerously-bypass-approvals-and-sandbox，提示词规则不是技术沙箱。只有在你明确批准、另有约束的环境中才使用，并核验它的输出。worker 不是必需组件。</p></details>
+</div></section>
+</main>
+<footer class="site-footer wrap">
+<p>job-agent-kit · v0.2.0 · <a href="https://github.com/LeiZiKang/job-agent-kit/blob/main/LICENSE">MIT</a></p>
+<nav aria-label="页脚导航"><a href="https://github.com/LeiZiKang/job-agent-kit">GitHub</a><a href="./index.md">Markdown</a><a href="../llms.txt">llms.txt</a><a href="https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/architecture.md">架构</a></nav>
+</footer>
+</body>
+</html>

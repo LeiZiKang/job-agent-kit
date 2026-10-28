@@ -2,6 +2,12 @@
 
 Newest first. The `update` skill shows the sections between your version and the latest one.
 
+## Unreleased
+- Marketing site: dependency-free English and Chinese pages in `site/`, with Google SEO
+  metadata, structured data, sitemap, social image and Agent SEO documentation.
+- GitHub Pages workflow regenerates `llms-full.txt` before deployment; runs on `main`
+  pushes changing `site/**` or manual dispatch. Release version remains 0.2.0.
+
 ## 0.2.0 — 2026-10-28
 - Tracker: `company` duplicate check, `apply --same-company-ok`, `--source` (scout / pirate /
   recruiter / inbound / referral / self / other), `update --replied / --interview`,

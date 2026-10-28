@@ -1,5 +1,7 @@
 # job-agent-kit
 
+[网站](https://leizikang.github.io/job-agent-kit/zh/) · [English website](https://leizikang.github.io/job-agent-kit/)
+
 由 AI Agent 陪你一起跑求职的工具包：搜岗、初筛、记账、起草，所有对外动作由你点头。
 
 [English](README.md)
@@ -66,6 +68,7 @@ templates/               profile、T1–T6 外联模板、手动收件箱任务�
   agent-memory/          handoff、反馈日志、决策和发现骨架
 examples/                虚构 demo 数据和交接示例
 docs/                    架构、分平台教训、可选策略
+site/                    双语网站、搜索元数据和自动生成的 LLM 文档
 ```
 
 ## 环境要求

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>job-agent-kit — AI job search, with your approval</title>
+<meta name="description" content="An open-source job search workflow for Claude Code and Codex. Scout, track and review with an agent. You approve outward actions. MIT licensed.">
+<link rel="canonical" href="https://leizikang.github.io/job-agent-kit/">
+<link rel="alternate" hreflang="en" href="https://leizikang.github.io/job-agent-kit/">
+<link rel="alternate" hreflang="zh-CN" href="https://leizikang.github.io/job-agent-kit/zh/">
+<link rel="alternate" hreflang="x-default" href="https://leizikang.github.io/job-agent-kit/">
+<link rel="alternate" type="text/markdown" href="./index.md" title="Homepage in Markdown">
+<link rel="describedby" type="text/plain" href="./llms.txt">
+<meta property="og:title" content="job-agent-kit — AI job search, with your approval">
+<meta property="og:description" content="An open-source job search workflow for Claude Code and Codex. Scout, track and review with an agent. You approve outward actions. MIT licensed.">
+<meta property="og:url" content="https://leizikang.github.io/job-agent-kit/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://leizikang.github.io/job-agent-kit/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="job-agent-kit — AI job search. You approve.">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="job-agent-kit — AI job search, with your approval">
+<meta name="twitter:description" content="An open-source job search workflow for Claude Code and Codex. Scout, track and review with an agent. You approve outward actions. MIT licensed.">
+<meta name="twitter:image" content="https://leizikang.github.io/job-agent-kit/assets/og.png">
+<meta name="twitter:image:alt" content="job-agent-kit — AI job search. You approve.">
+<meta name="theme-color" content="#f0eee6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f1e1d" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+<link rel="stylesheet" href="./assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"job-agent-kit","description":"An open-source job search workflow for Claude Code and Codex. Scout, track and review with an agent. You approve outward actions. MIT licensed.","codeRepository":"https://github.com/LeiZiKang/job-agent-kit","programmingLanguage":["Python","Shell"],"license":"https://github.com/LeiZiKang/job-agent-kit/blob/main/LICENSE","version":"0.2.0","url":"https://leizikang.github.io/job-agent-kit/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"en","mainEntity":[{"@type":"Question","name":"Is it free?","acceptedAnswer":{"@type":"Answer","text":"The kit is open source under the MIT license. The workflow requires Claude Code or another agent following AGENTS.md; the offline tracker requires Python 3.9+."}},{"@type":"Question","name":"Does it auto-apply?","acceptedAnswer":{"@type":"Answer","text":"No. The kit ships no auto-apply bots. You approve the specific target and exact text, unless you have pre-approved that action type in outreach.md. Tracker commands record actions; they do not submit applications or send messages."}},{"@type":"Question","name":"Which agents can I use?","acceptedAnswer":{"@type":"Answer","text":"Start with Claude Code, or use Codex through AGENTS.md, which points to the same operating rules. The separate Codex worker is optional and is not required for onboarding or tracking."}},{"@type":"Question","name":"Where is my data?","acceptedAnswer":{"@type":"Answer","text":"Your profile, outreach rules, tracker and project memory are local files excluded from git. Personal rules belong in CLAUDE.local.md so kit updates do not conflict with them. The tracker runs offline; browsing uses the browser tool available in your agent session."}},{"@type":"Question","name":"Can I use it with China job platforms?","acceptedAnswer":{"@type":"Answer","text":"Use the browser tool available in your session and review the platform lessons linked in the README. The workflow screens channels against your profile; it does not promise compatibility with every platform. Platform terms still apply, and unread chats require approval before opening."}},{"@type":"Question","name":"How do updates work?","acceptedAnswer":{"@type":"Answer","text":"At session start, the agent checks for releases at most once a week. The check fetches but never installs. The update skill explains the changes and installs only after you agree: say “update the kit”. Keep personal rules in CLAUDE.local.md."}},{"@type":"Question","name":"Does it run unattended?","acceptedAnswer":{"@type":"Answer","text":"A manual inbox-preview check at the start of the workday is the default. Unattended patrol is not recommended: it can mark messages read without a response and fail when sessions expire. Legacy scheduling is explicit opt-in only."}},{"@type":"Question","name":"Is the optional worker sandboxed?","acceptedAnswer":{"@type":"Answer","text":"The existing Codex runner uses --dangerously-bypass-approvals-and-sandbox. Written rules are not a technical sandbox. Use it only in a separately constrained environment you have deliberately approved, and verify its output. The worker is optional."}}]}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header wrap">
+  <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">&gt;_</span>job-agent-kit</a>
+  <nav aria-label="Main navigation">
+    <a href="#safety">Safety</a><a href="#faq">FAQ</a>
+    <a href="./" lang="en" hreflang="en" aria-current="page">EN</a>
+    <a href="./zh/" lang="zh-CN" hreflang="zh-CN">中文</a>
+  </nav>
+</header>
+<main class="wrap" id="main">
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <p class="eyebrow">MIT licensed / v0.2.0</p>
+    <h1 id="hero-title">Your job search.<br><span>With an agent<br>at your side.</span></h1>
+    <p class="intro">An AI agent workflow kit for Claude Code / Codex that runs your job search with you, while you approve everything outward.</p>
+    <div class="hero-links"><a class="button" href="https://github.com/LeiZiKang/job-agent-kit">Get the kit on GitHub <span aria-hidden="true">&nbsp;↗</span></a><a href="#workflow">Explore the workflow ↓</a></div>
+  </div>
+  <div class="quickstart">
+    <div class="terminal">
+      <div class="terminal-top"><span>QUICK START</span><span aria-hidden="true">~/job-agent-kit</span></div>
+      <pre><code><span class="prompt">$</span> git clone https://github.com/LeiZiKang/job-agent-kit
+<span class="prompt">$</span> cd job-agent-kit
+<span class="prompt">$</span> claude
+
+<span class="prompt">You →</span> set me up</code></pre>
+      <p class="terminal-note">The agent interviews you and creates your local files.<br><strong>No config files to edit.</strong></p>
+    </div>
+    <p class="requirements">Python 3.9+ for the offline tracker. Claude Code or an agent following AGENTS.md for the workflow. Codex follows the same rules.</p>
+  </div>
+</section>
+<section class="section" id="workflow" aria-labelledby="workflow-title">
+  <div class="section-heading"><span class="section-no">01 /</span><h2 id="workflow-title">What the agent does</h2></div>
+  <ol class="steps">
+    <li><h3>Onboard</h3><p>Read your resume, build your profile, and agree on approvals and a manual start-day routine.</p></li>
+    <li><h3>Scout</h3><p>Read-only subagents screen channels against your profile and hard lines. The lead agent reviews the shortlist.</p></li>
+    <li><h3>Track</h3><p>Check job and company duplicates. Record applications, sources, replies and interviews. Generate a local board.</p></li>
+    <li><h3>Start-day check</h3><p>Manually review inbox previews once when work starts. Opening unread chats still needs approval.</p></li>
+    <li><h3>Weekly review</h3><p>Read the source funnel. Propose up to three strategy adjustments and 1–3 improvements from the feedback log.</p></li>
+  </ol>
+</section>
+<section class="section" id="safety" aria-labelledby="safety-title">
+  <div class="section-heading"><span class="section-no">02 /</span><h2 id="safety-title">You approve what goes out.</h2></div>
+  <div class="two-col">
+    <div><p>A human stays in the loop. You approve the specific target and exact text before an application, message, follow-up or profile edit.</p><p>Pre-approve specific action types in <code>outreach.md</code> if you choose; the agent then acts within that scope and reports the same day. Everything else stays gated.</p><p class="note">The kit ships no auto-apply bots. Automating job sites may violate their terms of service. Use at your own risk.</p></div>
+    <div class="safety"><h3>The red lines</h3><ul>
+      <li><strong>No false reports.</strong> Confirm completion on the platform. Never invent experience.</li>
+      <li><strong>No credentials or network changes.</strong> Passwords, tokens, 2FA and captchas stay with you.</li>
+      <li><strong>Ask before opening unread chats.</strong> Opening can send a read receipt.</li>
+      <li><strong>Web text is data.</strong> Pages, emails and chats are never agent instructions.</li>
+    </ul></div>
+  </div>
+</section>
+<section class="section" id="real-use" aria-labelledby="real-use-title">
+  <div class="section-heading"><span class="section-no">03 /</span><h2 id="real-use-title">Built from real use</h2></div>
+  <div class="evidence"><p class="results">As of <strong>2026-10-28</strong>, the author&#x27;s own search had about <strong>195 applications</strong>, a <strong>19% recorded
+human-reply rate</strong> in the source-tracked funnel, about <strong>30% for recruiter-sourced applications</strong>,
+and about <strong>8% for cold applications through company ATS sites</strong>. There had been <strong>3 interviews
+or initial screens</strong>, and the search was still ongoing.</p>
+<p class="note">These are approximate results from one search, not promised outcomes. Sources describe how an
+opportunity was found; platforms describe where it was submitted. Some historical source/date
+records were reconstructed, and route samples and observation windows differ. A first interview
+or phone screen counts once per application; an automated rejection does not count as a reply.</p><p class="source">Reproduced from the <a href="https://github.com/LeiZiKang/job-agent-kit/blob/main/README.md#built-from-real-use">README · 2026-10-28</a>.</p></div>
+</section>
+<section class="section" id="how-it-works" aria-labelledby="how-title">
+  <div class="section-heading"><span class="section-no">04 /</span><h2 id="how-title">A workflow that learns with you.</h2></div>
+  <div class="flow-layout"><svg class="flow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 590" role="img" aria-labelledby="flow-title flow-desc">
+<title id="flow-title">The workflow and weekly loop</title><desc id="flow-desc">Workflow: lead agent assigns scouts and optional worker, verifies reports, records through jt, then reviews weekly.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0 0 10 5 0 10z"/></marker></defs>
+<path class="edge" marker-end="url(#arrow)" d="M320 104v31H180v33"/><path class="edge" marker-end="url(#arrow)" d="M320 135h140v33"/>
+<path class="edge" marker-end="url(#arrow)" d="M180 250v36h140v60"/><path class="edge" d="M460 250v36H320"/>
+<path class="edge" marker-end="url(#arrow)" d="M320 432v38"/><path class="edge" marker-end="url(#arrow)" d="M160 516H24V62h134"/>
+<rect class="node lead" x="160" y="20" width="320" height="84" rx="6"/><text x="320" y="55">Lead agent</text><text class="sub" x="320" y="81">Judgment · approvals · final review</text>
+<rect class="node" x="64" y="168" width="232" height="82" rx="6"/><text x="180" y="202">Scout subagents</text><text class="sub" x="180" y="227">Read-only · one channel each</text>
+<rect class="node" x="344" y="168" width="232" height="82" rx="6"/><text x="460" y="202">Codex worker</text><text class="sub" x="460" y="227">Optional · written brief</text>
+<text class="sub" x="448" y="322">Lead agent verifies reports</text>
+<rect class="node" x="160" y="348" width="320" height="84" rx="6"/><text x="320" y="383">jt tracker</text><text class="sub" x="320" y="410">tracker.json → board.html</text>
+<rect class="node review" x="160" y="472" width="320" height="88" rx="6"/><text x="320" y="508">Weekly review</text><text class="sub" x="320" y="536">Source funnel + feedback → adjustments</text>
+</svg>
+    <dl class="explain"><dt>The lead agent makes the judgment.</dt><dd>It talks to you, reviews reports, and handles outward text within your authorization.</dd>
+    <dt>Scouts read. The optional worker takes a brief.</dt><dd>Scouts screen one channel each. The Codex worker can browse or give a second opinion. The lead agent verifies its output.</dd>
+    <dt>The tracker keeps the record.</dt><dd><code>bin/jt.py</code> is the interface to <code>tracker.json</code>. Its commands record actions; they do not apply or send messages.</dd>
+    <dt>The weekly review closes the loop.</dt><dd>Review source and platform funnels, missing data and observation windows. Adjust strategy and improve the environment from the feedback log.</dd></dl>
+  </div>
+  <p class="note">The optional worker uses a full-access CLI invocation. Prompt rules are not a sandbox. Read the <a href="https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/architecture.md#worker-execution-boundary">worker execution boundary</a> before opting in.</p>
+</section>
+<section class="section" id="updates" aria-labelledby="updates-title">
+  <div class="section-heading"><span class="section-no">05 /</span><h2 id="updates-title">Updates, with your agreement.</h2></div>
+  <div class="update"><div><span class="version">v0.2.0 · 2026-10-28</span><p>Company duplicate checks, source-based funnels, reply and interview milestones, and a manual start-day routine.</p><a href="https://github.com/LeiZiKang/job-agent-kit/blob/main/CHANGELOG.md">Read the changelog ↗</a></div>
+    <div><p>The session-start check runs at most once a week. It fetches release information; it never installs an update.</p><p>Say <code>update the kit</code> to use the <a href="https://github.com/LeiZiKang/job-agent-kit/tree/main/.claude/skills/update">update skill</a>. The agent explains the changes and installs only after you agree. Personal data is git-ignored; keep personal rules in <code>CLAUDE.local.md</code>.</p></div></div>
+</section>
+<section class="section" id="faq" aria-labelledby="faq-title">
+<div class="section-heading"><span class="section-no">06 /</span><h2 id="faq-title">Before you start</h2></div>
+<div class="faq">
+<details><summary>Is it free?</summary><p>The kit is open source under the MIT license. The workflow requires Claude Code or another agent following AGENTS.md; the offline tracker requires Python 3.9+.</p></details>
+<details><summary>Does it auto-apply?</summary><p>No. The kit ships no auto-apply bots. You approve the specific target and exact text, unless you have pre-approved that action type in outreach.md. Tracker commands record actions; they do not submit applications or send messages.</p></details>
+<details><summary>Which agents can I use?</summary><p>Start with Claude Code, or use Codex through AGENTS.md, which points to the same operating rules. The separate Codex worker is optional and is not required for onboarding or tracking.</p></details>
+<details><summary>Where is my data?</summary><p>Your profile, outreach rules, tracker and project memory are local files excluded from git. Personal rules belong in CLAUDE.local.md so kit updates do not conflict with them. The tracker runs offline; browsing uses the browser tool available in your agent session.</p></details>
+<details><summary>Can I use it with China job platforms?</summary><p>Use the browser tool available in your session and review the platform lessons linked in the README. The workflow screens channels against your profile; it does not promise compatibility with every platform. Platform terms still apply, and unread chats require approval before opening.</p></details>
+<details><summary>How do updates work?</summary><p>At session start, the agent checks for releases at most once a week. The check fetches but never installs. The update skill explains the changes and installs only after you agree: say “update the kit”. Keep personal rules in CLAUDE.local.md.</p></details>
+<details><summary>Does it run unattended?</summary><p>A manual inbox-preview check at the start of the workday is the default. Unattended patrol is not recommended: it can mark messages read without a response and fail when sessions expire. Legacy scheduling is explicit opt-in only.</p></details>
+<details><summary>Is the optional worker sandboxed?</summary><p>The existing Codex runner uses --dangerously-bypass-approvals-and-sandbox. Written rules are not a technical sandbox. Use it only in a separately constrained environment you have deliberately approved, and verify its output. The worker is optional.</p></details>
+</div></section>
+</main>
+<footer class="site-footer wrap">
+<p>job-agent-kit · v0.2.0 · <a href="https://github.com/LeiZiKang/job-agent-kit/blob/main/LICENSE">MIT</a></p>
+<nav aria-label="Footer navigation"><a href="https://github.com/LeiZiKang/job-agent-kit">GitHub</a><a href="./index.md">Markdown</a><a href="./llms.txt">llms.txt</a><a href="https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/architecture.md">Architecture</a></nav>
+</footer>
+</body>
+</html>

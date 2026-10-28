@@ -1,5 +1,7 @@
 # job-agent-kit
 
+[Website](https://leizikang.github.io/job-agent-kit/) · [中文网站](https://leizikang.github.io/job-agent-kit/zh/)
+
 An AI agent that runs your job search with you: it scouts, screens, tracks and drafts, and you approve everything that goes out.
 
 [简体中文](README.zh-CN.md)
@@ -87,6 +89,7 @@ templates/               profile, outreach T1–T6, manual inbox brief
   agent-memory/          handoff, feedback log, decisions and findings skeleton
 examples/                synthetic demo tracker and handoff
 docs/                    architecture, platform lessons, optional strategy patterns
+site/                    bilingual website, search metadata and generated LLM documentation
 ```
 
 ## Requirements

@@ -1,0 +1,348 @@
+# job-agent-kit — full documentation
+
+> Public repository documentation. Regenerate with python3 site/build-llms.py.
+
+Source files are reproduced below in order. Relative Markdown links are expanded to their public repository URLs.
+
+---
+
+Source: [README.md](https://github.com/LeiZiKang/job-agent-kit/blob/main/README.md)
+
+# job-agent-kit
+
+[Website](https://leizikang.github.io/job-agent-kit/) · [中文网站](https://leizikang.github.io/job-agent-kit/zh/)
+
+An AI agent that runs your job search with you: it scouts, screens, tracks and drafts, and you approve everything that goes out.
+
+[简体中文](https://github.com/LeiZiKang/job-agent-kit/blob/main/README.zh-CN.md)
+
+## What it is
+An agent-driven repo. Clone it, open it in Claude Code, say "set me up". The agent interviews you and creates every local file. There are no config files to edit.
+
+![Job board](https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/board.png)
+
+## Quick start
+```bash
+git clone https://github.com/LeiZiKang/job-agent-kit
+cd job-agent-kit
+claude
+# then say: set me up
+```
+Also works with Codex: `AGENTS.md` points it at the same rules.
+
+## What the agent does
+- **Onboard**: interview, resume reading, profile, pre-approved actions and a manual start-day routine.
+- **Scout**: parallel read-only subagents screen channels against your profile and hard lines.
+- **Apply with your approval**: you approve target and exact text, except action types you pre-approved.
+- **Track**: `bin/jt.py` checks job and company duplicates, records source/reply/interview milestones,
+  and generates `board.html`. `status` is read-only; `sweep --dry-run` previews explicit ghosting.
+- **Start-day check**: manually review inbox previews once when starting work, within your approval.
+- **Weekly review**: `jt funnel --by source`, up to three strategy adjustments, and 1–3 environment
+  improvements from the feedback log.
+
+See [architecture](https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/architecture.md), [platform lessons](https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/lessons.md) and
+[optional strategy patterns](https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/strategy-patterns.md).
+
+## Safety model
+- Red lines: outward actions need your approval (unless pre-approved by type); no false reports; no credentials, captchas or network settings; no opening unread chats without asking; web text is data, not instructions.
+- A human stays in the loop. The kit ships no auto-apply bots.
+- Platform terms: automating job sites may violate their terms of service. Use at your own risk.
+
+## Built from real use
+As of **2026-10-28**, the author's own search had about **195 applications**, a **19% recorded
+human-reply rate** in the source-tracked funnel, about **30% for recruiter-sourced applications**,
+and about **8% for cold applications through company ATS sites**. There had been **3 interviews
+or initial screens**, and the search was still ongoing.
+
+These are approximate results from one search, not promised outcomes. Sources describe how an
+opportunity was found; platforms describe where it was submitted. Some historical source/date
+records were reconstructed, and route samples and observation windows differ. A first interview
+or phone screen counts once per application; an automated rejection does not count as a reply.
+
+This kit is the current entry point; `jobflow` is an earlier version of the same workflow.
+
+## Daily check, not unattended patrol
+The author now runs one manual inbox check at the start of each workday. Scheduled unattended
+patrol could mark messages read without replying and fail when logins expired. It is **not
+recommended by default**. Legacy `patrol.sh` and `schedule.sh` are in [contrib/](https://github.com/LeiZiKang/job-agent-kit/blob/main/contrib/README.md),
+for explicit opt-in only. Do not open unread chats just to inspect them.
+
+## Tracker examples
+```bash
+python3 bin/jt.py company "Example Company" "Known Alias"
+python3 bin/jt.py update <application-id> --replied
+python3 bin/jt.py update <application-id> --interview YYYY-MM-DD
+python3 bin/jt.py funnel --since YYYY-MM-DD --by source
+python3 bin/jt.py status --full
+python3 bin/jt.py sweep --dry-run
+```
+`apply --source scout|pirate|recruiter|inbound|referral|self|other` records origin;
+`apply --same-company-ok "reason"` records a reviewed company exception. Only `sweep` changes
+eligible applications to ghosted after 21 days without a recorded reply/interview. Review missing
+outcomes first. See `CLAUDE.md` for semantics and `python3 bin/jt.py <command> --help` for options.
+
+## Updates
+The kit is versioned (`VERSION`, [CHANGELOG.md](https://github.com/LeiZiKang/job-agent-kit/blob/main/CHANGELOG.md)). At session start the agent runs
+`bin/update-check.sh` at most once a week; it only fetches, never installs. When a release is out,
+the agent tells you what changes and installs it only after you agree (say "update the kit").
+Your data is git-ignored and untouched; keep personal rules in `CLAUDE.local.md` so updates never conflict.
+
+## Repo layout
+```
+CLAUDE.md, AGENTS.md      agent operating manual and feedback loop
+.claude/skills/           onboard, scout, weekly-review, update
+.claude/agents/           read-only job-scout
+bin/                     tracker, tests, update check, optional Codex worker/helpers
+contrib/                 legacy patrol and macOS scheduling (opt-in)
+templates/               profile, outreach T1–T6, manual inbox brief
+  briefs/                pirate and newjobs assignments
+  agent-memory/          handoff, feedback log, decisions and findings skeleton
+examples/                synthetic demo tracker and handoff
+docs/                    architecture, platform lessons, optional strategy patterns
+site/                    bilingual website, search metadata and generated LLM documentation
+```
+
+## Requirements
+Python 3.9+ for the offline tracker; Claude Code or another agent following `AGENTS.md` for the
+workflow. Use the browser tool available in your session; no ego-browser or DeepSeek dependency.
+The optional worker uses zsh, Perl and Codex CLI; legacy scheduling additionally requires macOS
+launchd. Review the [worker execution boundary](https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/architecture.md#worker-execution-boundary)
+before using the full-access runner. No worker or scheduler is required for tracker/demo use.
+
+## Contributing
+Issues and PRs welcome. Run `python3 bin/test_jt.py` and `python3 bin/jt.py demo` first. Do not include personal data.
+
+## License
+MIT. See [LICENSE](https://github.com/LeiZiKang/job-agent-kit/blob/main/LICENSE).
+
+---
+
+Source: [CHANGELOG.md](https://github.com/LeiZiKang/job-agent-kit/blob/main/CHANGELOG.md)
+
+# Changelog
+
+Newest first. The `update` skill shows the sections between your version and the latest one.
+
+## Unreleased
+- Marketing site: dependency-free English and Chinese pages in `site/`, with Google SEO
+  metadata, structured data, sitemap, social image and Agent SEO documentation.
+- GitHub Pages workflow regenerates `llms-full.txt` before deployment; runs on `main`
+  pushes changing `site/**` or manual dispatch. Release version remains 0.2.0.
+
+## 0.2.0 — 2026-10-28
+- Tracker: `company` duplicate check, `apply --same-company-ok`, `--source` (scout / pirate /
+  recruiter / inbound / referral / self / other), `update --replied / --interview`,
+  `funnel --since --by platform|source`.
+- `status` is now read-only. Ghosting after 21 days without a reply is explicit: `sweep --dry-run`, then `sweep`.
+- Scheduled patrol moved to `contrib/` and is no longer recommended (it marked messages read
+  without replying and broke when logins expired). A manual start-day check replaces it.
+- Weekly loop: funnel by source plus 1–3 environment fixes from `.agent-memory/claude-feedback.md`.
+- New: outreach T1b / T5c, `templates/briefs/` (pirate, newjobs), platform-sectioned
+  `docs/lessons.md`, `docs/strategy-patterns.md`, stricter worker standing rules.
+- Updates: `VERSION`, this changelog, `bin/update-check.sh` and the `update` skill.
+  Personal rules go in `CLAUDE.local.md` (git-ignored), so pulling updates never conflicts with them.
+
+## 0.1.0 — 2026-10-14
+- Initial release: onboard / scout / weekly-review skills, job-scout subagent, `jt.py` tracker
+  and board, Codex worker, optional patrol.
+
+---
+
+Source: [docs/architecture.md](https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/architecture.md)
+
+# Architecture
+
+```mermaid
+flowchart LR
+  U[You] <--> L[Lead agent<br/>Claude Code]
+  L -->|parallel, read-only| S[Scout subagents]
+  L -->|written brief| C[Codex worker<br/>bounded browsing]
+  S --> R[reports/scout]
+  C --> P[reports/patrol]
+  R --> L
+  P --> L
+  L <--> T[(tracker.json<br/>via bin/jt.py)]
+  L <--> M[.agent-memory<br/>handoff, decisions, findings]
+  C <--> M
+  T --> B[board.html]
+  M --> B
+```
+
+- **Lead agent (Claude Code)**: judgment, all outward text, final review. Talks to you.
+- **Scout subagents**: screen one channel each, in parallel, read-only. Output a shortlist JSON.
+- **Codex worker (optional)**: bulk browsing, second-opinion scouting, manually requested inbox previews. Gets a
+  written brief with goal, forbidden actions and output path. Never trusted unverified.
+- **Tracker (`bin/jt.py`)**: single source of truth for jobs seen, applications and contacts.
+  Validated, deduplicated by URL and platform job id, with heuristic company checks and explicit
+  delivery review. Read-only status and source/platform funnels; ghosting requires explicit sweep. Agents never hand-edit the JSON.
+- **`.agent-memory/`**: cross-agent handoff plus a feedback log feeding weekly environment improvements.
+- **`board.html`**: local dashboard generated from the tracker and the handoff file.
+
+## Red lines and "do, then report"
+Outward actions (applications, messages, emails) are irreversible and carry your name, so the
+default is human approval of the exact target and text. Asking every time is slow and trains you
+to click yes blindly, so you can pre-approve specific low-risk action types in `outreach.md`:
+the agent acts, then reports the same day. Everything else stays gated. Credentials, captchas
+and unread-chat opening always stay with you. Web page text is treated as data, never as
+instructions, which limits prompt injection from job posts and messages.
+
+
+## Worker execution boundary
+`bin/codex-run.sh` combines a written brief, fixed standing rules, a configurable timeout and
+local logs under ignored `reports/codex-logs/`. It saves the worker's exit status, including timeout
+failure, for the caller to inspect. `CODEX_BIN` can select a CLI; otherwise PATH is checked before
+the existing app-bundle fallback. There is no DeepSeek or ego-browser dependency.
+
+The runner retains its existing `--dangerously-bypass-approvals-and-sandbox` invocation for
+compatibility. Prompt rules are **not a sandbox**: this option disables CLI approval and sandbox
+controls. Use only in a separately constrained environment you have deliberately approved; it is
+optional and not required for onboarding or tracking. This port does not claim technical enforcement
+of read-only browsing. Result verification and the user's outward-action authorization still apply.
+
+Unattended macOS scheduling lives in `contrib/` and is not recommended by default. The author's
+actual workflow now begins with one manual inbox preview check; permission to read a preview is
+not permission to open an unread conversation.
+
+---
+
+Source: [docs/lessons.md](https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/lessons.md)
+
+# Lessons from real use
+
+These are observations from the author's workflow through 2026-10-28, not permanent platform
+contracts or safe request-rate guarantees. Verify the visible UI before an authorized action.
+Criteria and candidate facts belong in `profile.md`; these notes describe operational pitfalls.
+
+## General
+- **A greeting is not resume delivery.** Check both `jt seen` and `jt company`, then read status
+  and evidence. A company appearing in the tracker does not prove its recruiter has the resume.
+  Review aliases, client names and team overlap before blocking another route or recording a
+  reason with `apply --same-company-ok`.
+- **Confirm completion.** Consent screens and uploaded attachments are intermediate steps.
+  Record submission only after a confirmation page or equivalent evidence; inspect ATS-parsed
+  employers, dates and titles before submission.
+- **Record outcomes where the funnel reads them.** Human replies go in `update --replied`;
+  interviews and phone screens in `update --interview`. Automated acknowledgments/rejections
+  are not human replies. A rejection after a real exchange can have both reply and rejection data.
+- **Do not act on stale inbox reports.** The user may have replied from a phone. Before reporting
+  a message as pending, check current previews or the conversation only within its authorization.
+  Keep live observations separate from old evidence; record unknown dates as unknown, not today.
+- **Opening is an outward effect.** Unread chats and invitations may send read receipts. The
+  author stopped unattended scheduled patrol and checks manually at the start of the workday:
+  unattended runs could mark messages read without replying and lose login sessions.
+- **Screen the environment with evidence.** An employer category or a benefits tag does not
+  prove reasonable hours. Distinguish positive evidence, negative evidence and unknowns. Apply
+  the user's policy for unknowns from `profile.md`; clarify the actual employer/client relationship.
+- **Keep decisions visible.** Rewrite the current handoff rather than appending a diary. Record
+  friction in `claude-feedback.md`; improve the environment weekly. Answer all user questions
+  before closing a phase, and maintain reasoned recommendations unless new evidence changes them.
+
+## BOSS 直聘
+- A scout once opened an empty recruiter conversation by clicking “立即沟通”. Its brief must
+  explicitly prohibit that action: scouts only navigate to `job_detail` pages and read text,
+  with **no button clicks**. “Read-only” alone is too vague.
+- Opening a chat and delivering a resume are separate steps; attachment sending may be unavailable
+  until a reply. Record the observed result rather than inferring delivery from the button name.
+- Company abbreviations and local-language names can return different results. Check aliases,
+  city fallback and ads; a matching keyword in the list is not proof that the core role fits.
+- Serial reads with pauses reduce avoidable load but do not guarantee exemption from rate limits.
+  Do not use concurrent workers on the same account/platform or probe limits through hidden APIs.
+
+## 猎聘
+- Clicking “聊一聊 / 继续聊” on a job page has automatically sent a message in the user's name.
+  Treat it as a send action, not navigation; scouts never click it.
+- Accepting an invitation and submitting a resume has also sent platform-generated greetings.
+  Approval must cover those effects. An online-resume card is not proof the attachment was sent.
+- Reading many JDs and batch-applying in the **same hour** triggered a captcha in actual use.
+  Separate search and application sessions; avoid parallel tabs. Even list-only searches have
+  triggered verification. There is no demonstrated safe quota; stop the batch on the first block.
+- Resume synchronization can misparse work history. Do not click “sync attachment to online
+  resume” as routine maintenance. A web placeholder saying content is app-only does not establish
+  who sent it or whether it is an advertisement; verify before reporting an outbound message.
+
+## LinkedIn
+- Invitation-note lengths and quotas depend on the account and UI. Read the displayed allowance;
+  do not hardcode historical limits or work around exhausted quotas.
+- A connection request is not an application, referral or accepted connection. Confirm each state.
+  Send T5c at most once after acceptance and only within its approved scope; if no application
+  exists, use an approved T1b message without claiming to have applied.
+- Keep search, invitations and follow-up messages separate in reports and evidence. A sent request
+  must not be counted as a human reply in the application funnel.
+
+## 脉脉
+- Opening invitation cards can mark them read. Preview lists first; do not open unread cards for
+  scouting unless authorized and the user is ready to respond.
+- On some invitation cards, “同意” sends the resume before messaging becomes available. It is
+  not a harmless way to ask who the client is. “感兴趣” can also submit an application; scouts
+  never click it. Some “立即沟通” buttons lead to membership purchase rather than a free chat.
+- After an action, the detail view may move to another job. Reconfirm the target before any
+  further authorized action. Search and chat capabilities differ between web and app, and rate
+  limits may affect both. Do not change accounts or settings to get around a block.
+
+## Workers
+- Use a written brief with one route, budget, prohibited actions and exact output path. Keep
+  screening criteria in `profile.md`, not duplicated personal facts in each worker prompt.
+- Use the host's managed background-task facility (for example `run_in_background`), never bare
+  `&`. Detached work has finished without a completion notification and its results were missed.
+  Every polling loop and background wait needs a deadline; clean up task-owned processes.
+- Create a valid partial result early, save each verified finding, and report incomplete coverage.
+  A timeout or missing file is not evidence that no suitable jobs exist.
+- Re-read current result files before final review; a startup handoff snapshot can miss work
+  completed during the session. Check worker evidence before claiming anything to the user.
+- Stop and re-brief a worker that goes off track. A fixed prompt is an instruction boundary,
+  not a technical sandbox. The legacy runner currently retains its full-access CLI option;
+  see [architecture](https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/architecture.md#worker-execution-boundary) before opting in.
+
+---
+
+Source: [docs/strategy-patterns.md](https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/strategy-patterns.md)
+
+# Optional strategy patterns
+
+These are hypotheses to adapt to `profile.md` and the user's own outcomes, not universal hiring
+rules. Review them weekly; never override hard lines or invent experience to improve a funnel.
+
+## Two routes: conventional channels and direct engineering contact
+Keep a conventional route for screened job boards, recruiters, referrals and suitable company
+sites. Alongside it, try public hiring posts from engineering leads or teams willing to review
+work directly. Use one relevant project and an approved portfolio link (T1b), rather than a
+keyword-heavy pitch. Direct contact can bypass an HR screen; it does not bypass approval or
+create permission to scrape private contacts. Recruiter and inbound messages deserve timely
+triage before launching another wide search.
+
+## Prefer Mid-level cold applications when the profile fits
+For a candidate whose verified experience fits Mid-level work, prioritize those openings in
+cold applications. Consider Senior only when the responsibilities and evidence support it;
+otherwise keep it as `maybe` and spell out the gap. Job titles and years can be imperfect signals.
+The level policy belongs in the user's profile; this is not a ban on senior candidates or roles.
+
+## Filter working conditions, not company labels
+Choose evidence of reasonable planning, individual boundaries, clear employment arrangements
+and respectful collaboration. An international company label is not proof of these conditions;
+a local company label is not proof against them. Record what is observed and what is unknown.
+If public evidence is thin, prepare questions for an authorized conversation instead of inventing
+certainty. The profile decides which unknowns are acceptable.
+
+## Keep a decision pool
+Use `seen_jobs` with `verdict=maybe` for promising roles needing a decision: level gaps, uncertain
+work conditions, unclear remote eligibility or possible same-company overlap. Give each a reason
+and a next question. `jt status --full` and the board expose this pool. The lead agent reviews it
+before any application; it must not silently become an auto-apply queue.
+
+## Let source cohorts decide which searches are worth running
+Run `python3 bin/jt.py funnel --by source` for all time and with `--since YYYY-MM-DD` for comparable
+application cohorts. Also inspect `--by platform`: platform is where the application happened;
+source is how the opportunity was found. For example, a Pirate finding applied through an ATS
+keeps `platform=ats` and `source=pirate`.
+
+Use `scout`, `pirate`, `recruiter`, `inbound`, `referral`, `self` or `other` consistently; preserve
+missing legacy values as `(unrecorded)`. `recruiter` means recruiter-sourced, while `inbound` is
+an employer contacting the candidate directly. Record the first human reply and first interview
+or phone screen; later rejection does not erase those events. The funnel counts applications
+with a recorded milestone, not every interview round. Automated acknowledgments do not count.
+
+Compare reply/interview yield with time spent, sample size, missing source data and how long
+applications have had to mature. A low recent reply rate alone does not prove a route failed.
+Reduce repeated low-yield searches; test a narrower route, better fit or a different outreach
+approach, then measure again. Pirate discovery can be occasional rather than daily. Propose no
+more than three adjustments per weekly review, each with evidence and a follow-up date.
