@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On your Mac — A day with job-agent-kit</title>
+<meta name="description" content="See a day with job-agent-kit on your Mac: start in Claude Code, scout with subagents, approve messages, track on a local board and review your week. Illustrated with demo data.">
+<link rel="canonical" href="https://leizikang.github.io/job-agent-kit/mac/">
+<link rel="alternate" hreflang="en" href="https://leizikang.github.io/job-agent-kit/mac/">
+<link rel="alternate" hreflang="zh-CN" href="https://leizikang.github.io/job-agent-kit/zh/mac/">
+<link rel="alternate" hreflang="x-default" href="https://leizikang.github.io/job-agent-kit/mac/">
+<link rel="alternate" type="text/markdown" href="./index.md" title="This page in Markdown">
+<link rel="describedby" type="text/plain" href="../llms.txt">
+<meta property="og:title" content="On your Mac — A day with job-agent-kit">
+<meta property="og:description" content="See a day with job-agent-kit on your Mac: start in Claude Code, scout with subagents, approve messages, track on a local board and review your week. Illustrated with demo data.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://leizikang.github.io/job-agent-kit/mac/">
+<meta property="og:image" content="https://leizikang.github.io/job-agent-kit/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="job-agent-kit — AI job search. You approve.">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="On your Mac — A day with job-agent-kit">
+<meta name="twitter:description" content="See a day with job-agent-kit on your Mac: start in Claude Code, scout with subagents, approve messages, track on a local board and review your week. Illustrated with demo data.">
+<meta name="twitter:image" content="https://leizikang.github.io/job-agent-kit/assets/og.png">
+<meta name="twitter:image:alt" content="job-agent-kit — AI job search. You approve.">
+<meta name="theme-color" content="#f0eee6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f1e1d" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/mac.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://leizikang.github.io/job-agent-kit/mac/#webpage","name":"On your Mac — A day with job-agent-kit","description":"See a day with job-agent-kit on your Mac: start in Claude Code, scout with subagents, approve messages, track on a local board and review your week. Illustrated with demo data.","url":"https://leizikang.github.io/job-agent-kit/mac/","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"job-agent-kit","url":"https://leizikang.github.io/job-agent-kit/"},"breadcrumb":{"@id":"https://leizikang.github.io/job-agent-kit/mac/#breadcrumb"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://leizikang.github.io/job-agent-kit/"},{"@type":"ListItem","position":2,"name":"On your Mac","item":"https://leizikang.github.io/job-agent-kit/mac/"}],"@id":"https://leizikang.github.io/job-agent-kit/mac/#breadcrumb"}</script>
+</head>
+<body class="mac-page">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header wrap">
+<a class="brand" href="../"><span class="brand-mark" aria-hidden="true">&gt;_</span>job-agent-kit</a>
+<nav aria-label="Main navigation"><a href="../">Overview</a><a href="./" aria-current="page">On your Mac</a><a href="#quick-start">Quick start</a><a href="../zh/mac/" lang="zh-CN" hreflang="zh-CN">中文</a></nav>
+</header>
+<main id="main" class="wrap">
+<section class="mac-hero" aria-labelledby="page-title">
+<p class="eyebrow">job-agent-kit / on your Mac</p>
+<h1 id="page-title">A day in your search.<br><span>With an agent.</span></h1>
+<p class="intro">A conversation to start. A shortlist to consider. A decision that stays yours. Here’s what working together looks like.</p>
+<nav class="day-nav" aria-label="Scenes"><a href="#morning">Morning</a><a href="#scout">Scout</a><a href="#approve">Approve</a><a href="#track">Track</a><a href="#review">Friday</a><a href="#updates">Updates</a></nav>
+<p class="demo-note">Illustrated workflow · selectable HTML, not screenshots.<br>All companies and job records below are fictional demo data. Conversations are illustrative, not live sessions.</p>
+</section>
+<section class="scene" id="morning" aria-labelledby="morning-title">
+<div class="scene-copy"><p class="kicker">01 / Morning</p><h2 id="morning-title">Start the day.</h2><p>The agent reads the handoff and checks the tracker. You pick up where you left off.</p></div>
+<div class="stage reveal "><div class="window "><div class="window-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">Terminal — Claude Code · job-agent-kit</span></div><div class="session"><p><span class="speaker">You ›</span> start the day</p>
+<p class="command">Read .agent-memory/handoff.md<br>$ python3 bin/jt.py status</p>
+<p><span class="speaker">Claude ›</span> Three things need your attention.</p>
+<ol><li><strong>Fabrikam</strong> — review the salary-question reply before it goes out.</li><li><strong>Northwind</strong> — resolve the contract / direct-hire question before preparing for the system design round.</li><li><strong>Proseware</strong> — the draft is ready; the application is waiting for your approval.</li></ol>
+<p class="status-line">Next: one manual inbox-preview check. Ask before opening unread chats.</p></div></div></div>
+<p class="scene-caption">Illustrative summary from the example handoff and tracker. In a real session, pending items are refreshed before reporting.</p>
+</section>
+<section class="scene" id="scout" aria-labelledby="scout-title">
+<div class="scene-copy"><p class="kicker">02 / Scout</p><h2 id="scout-title">Three channels.<br>One considered shortlist.</h2><p>Read-only scouts work in parallel. The lead agent brings the findings back together and makes the final review.</p></div>
+<div class="stage reveal scout-stage"><div class="window "><div class="window-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">Terminal — Claude Code · lead agent</span></div><div class="session"><p><span class="speaker">Lead agent ›</span> One channel per scout. Read the full job description, check fit, return a shortlist.</p>
+<ul class="scout-list"><li><span class="branch" aria-hidden="true">├</span><div>job-scout · LinkedIn<small>Read-only → reports/scout/…-linkedin.json</small></div></li><li><span class="branch" aria-hidden="true">├</span><div>job-scout · Indeed<small>Read-only → reports/scout/…-indeed.json</small></div></li><li><span class="branch" aria-hidden="true">└</span><div>job-scout · Company ATS<small>Read-only → reports/scout/…-ats.json</small></div></li></ul>
+<p class="status-line">I’ll verify the shortlist, then check job and company duplicates.<br>jt seen · jt company</p></div></div><div class="window json-window"><div class="window-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">shortlist.json · demo excerpt</span></div><div class="session"><pre tabindex="0" aria-label="Shortlist JSON excerpt"><code>{
+  <span class="json-key">"channel"</span>: <span class="json-value">"linkedin"</span>,
+  <span class="json-key">"source"</span>: <span class="json-value">"scout"</span>,
+  <span class="json-key">"shortlist"</span>: [{
+    <span class="json-key">"company"</span>: <span class="json-value">"Alpine Ski House"</span>,
+    <span class="json-key">"role"</span>: <span class="json-value">"Senior React Engineer"</span>,
+    <span class="json-key">"verdict"</span>: <span class="json-value">"recommend"</span>
+  }]
+}</code></pre></div></div></div>
+<p class="scene-caption">Scouts do not apply, message or open unread chats. The floating JSON is an abbreviated illustration using an example candidate.</p>
+</section>
+<section class="scene" id="approve" aria-labelledby="approve-title">
+<div class="scene-copy"><p class="kicker">03 / You approve</p><h2 id="approve-title">Your words.<br>Your final say.</h2><p>Read the target and the message together. Nothing goes out without your approval, unless you already approved that action type.</p></div>
+<div class="stage reveal approval-stage"><div class="window "><div class="window-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">Terminal — Claude Code · approval</span></div><div class="session"><p><span class="speaker">Claude ›</span> Here’s the exact reply for your approval.</p>
+<div class="draft"><span class="draft-label">T2 · Reply to an inbound recruiter</span><p class="command">To: Example Co. recruiting team · Email</p><p>Hi Example Co. recruiting team, thanks for reaching out about the Frontend Engineer role. Could you share the company or client, team size and working arrangement? Happy to share my resume if there is a fit.</p></div>
+<p><span class="speaker">Claude ›</span> Send this exact text to this recipient?</p>
+<p class="approved"><span class="speaker">You ›</span> yes, send it</p>
+<p class="dim">Approval is for this recipient and this text. Delivery must be verified before it is recorded as sent.</p></div></div></div>
+<p class="scene-caption">Illustrative T2 reply with a placeholder company and no personal claims. Human in the loop: draft → review → approve → verify delivery.</p>
+</section>
+<section class="scene" id="track" aria-labelledby="track-title">
+<div class="scene-copy"><p class="kicker">04 / Track</p><h2 id="track-title">The whole search.<br>In one place.</h2><p>Decisions first. Then recommendations, applications and what comes next. A local board, generated from your records.</p></div>
+<div class="stage reveal board-stage"><div class="window "><div class="window-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title"><span class="browser-address">job-agent-kit / board.html</span></span></div><div class="board-viewport" tabindex="0" role="region" aria-label="Scrollable demo job board"><div class="board-heading"><h3>Job Board</h3><span>DEMO DATA · tracker excerpt</span></div>
+<div class="board-panel"><h4>Needs your decision</h4><p><strong>Proseware</strong> · Waiting on user approval</p><p><strong>Fabrikam</strong> · Reply to recruiter salary question</p></div>
+<div class="board-metrics"><span>Applied<b>8</b></span><span>Waiting<b>4</b></span><span>Interviewing<b>1</b></span></div>
+<h4>Recommended <small>2</small></h4><article class="board-card "><h5>Alpine Ski House</h5><p class="board-role">Senior React Engineer<span class="board-tag">LinkedIn</span></p><p class="why">Remote, React/TS match, salary posted in range; team of 8, positive WLB evidence</p></article><article class="board-card "><h5>Coho Winery</h5><p class="board-role">Frontend Lead<span class="board-tag">LinkedIn</span></p><p class="why">Remote-first, design systems focus matches shipped project</p></article>
+<details><summary>Maybe · 2</summary><article class="board-card maybe-card"><h5>Woodgrove</h5><p class="board-role">Full-stack Engineer<span class="board-tag">LinkedIn</span></p><p class="why">Good stack, but no salary and no WLB evidence yet</p></article><article class="board-card maybe-card"><h5>Lucerne</h5><p class="board-role">Web Engineer<span class="board-tag">Company site</span></p><p class="why">Hybrid in another city; ask about remote</p></article></details>
+<h4>Applications <small>6 active / 8 total</small></h4><ul class="board-apps"><li><div class="board-app-line"><strong>Northwind</strong><span class="board-pill interviewing">interviewing</span><span class="board-tag">LinkedIn</span></div><p>Senior Frontend Engineer · 2026-09-28</p><p>Prep system design round Oct 16</p></li><li><div class="board-app-line"><strong>Proseware</strong><span class="board-pill preparing">preparing</span><span class="board-tag">Company site</span></div><p>Senior Software Engineer · 2026-10-13</p><p>Waiting on user approval</p></li><li><div class="board-app-line"><strong>Litware</strong><span class="board-pill submitted">submitted</span><span class="board-tag">Indeed</span></div><p>UI Engineer · 2026-10-08</p></li><li><div class="board-app-line"><strong>Adatum</strong><span class="board-pill submitted">submitted</span><span class="board-tag">Referral</span></div><p>Staff Engineer · 2026-10-06</p></li><li><div class="board-app-line"><strong>Fabrikam</strong><span class="board-pill submitted">submitted</span><span class="board-tag">Company site</span></div><p>Full-stack Engineer · 2026-10-02</p><p>Reply to recruiter salary question</p></li><li><div class="board-app-line"><strong>Contoso Mobile</strong><span class="board-pill submitted">submitted</span><span class="board-tag">LinkedIn</span></div><p>iOS Engineer · 2026-10-01</p><p>Follow up Oct 8 (T4)</p></li><li><div class="board-app-line"><strong>Tailspin Toys</strong><span class="board-pill rejected">rejected</span><span class="board-tag">Indeed</span></div><p>Web Platform Engineer · 2026-09-20</p></li><li><div class="board-app-line"><strong>Wingtip</strong><span class="board-pill ghosted">ghosted</span><span class="board-tag">Email</span></div><p>Frontend Engineer · 2026-09-15</p></li></ul></div></div></div>
+<p class="scene-caption">Scrollable excerpt styled after python3 bin/jt.py demo. All counts and job records come from examples/tracker.json; “Applied” includes the preparing record. Tracker commands record actions; they do not submit them.</p>
+</section>
+<section class="scene" id="review" aria-labelledby="review-title">
+<div class="scene-copy"><p class="kicker">05 / Friday review</p><h2 id="review-title">Learn from the week.<br>Adjust the next one.</h2><p>Ask what worked, what is missing, and what to change. At most three adjustments, with evidence and a date to check again.</p></div>
+<div class="stage reveal review-stage"><div class="window "><div class="window-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">Terminal — weekly review</span></div><div class="session"><p class="command">$ python3 bin/jt.py funnel --by source</p><p class="update-label">Demo data · exact output from examples/tracker.json</p>
+<pre tabindex="0" aria-label="Source funnel output; scroll horizontally for all columns"><code>Source            Applied  Replied  Reply rate  Interviews  Rejected
+(unrecorded)            8        0          0%           0         1
+Total                   8        0          0%           0         1</code></pre>
+<p><span class="speaker">Claude ›</span> Three adjustments for the next review:</p>
+<ol class="review-notes"><li>Record known sources first. All 8 records are unrecorded; there is no basis for ranking channels yet.</li><li>Repair missing milestones from evidence. Northwind is interviewing, but no interview date is recorded. Don’t read the zero as “no interviews”.</li><li>Before shifting effort, compare like-aged cohorts with --since and inspect --by platform. Reassess next Friday; this demo sample is small and incomplete.</li></ol></div></div></div>
+<p class="scene-caption">This is the current tracker’s exact calculation, not an outcome claim: 8 records include one draft; zero replies and interviews means no milestone fields are recorded. Source is not platform.</p>
+</section>
+<section class="scene" id="updates" aria-labelledby="updates-title">
+<div class="scene-copy"><p class="kicker">06 / Stays up to date</p><h2 id="updates-title">A little nudge.<br>You decide when.</h2><p>At session start, the agent checks for releases at most once a week. It explains what changes before asking to install.</p></div>
+<div class="stage reveal update-stage"><div class="window "><div class="window-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="window-title">Terminal — update-check</span></div><div class="session"><p class="command">$ bin/update-check.sh</p><p class="update-label">Illustrative release notice</p>
+<p><strong>job-agent-kit · new version available</strong><br><span class="dim">Release information fetched. Nothing installed.</span></p>
+<p><span class="speaker">Claude ›</span> I’ll explain the changes first. Then you decide:<br><strong>install it?</strong></p>
+<p class="status-line">Waiting for your agreement. Personal rules stay in CLAUDE.local.md.</p></div></div></div>
+<p class="scene-caption">Illustrative notification, not a live version check. Checks fetch release information; installation always needs your agreement.</p>
+</section>
+<section class="mac-cta" id="quick-start" aria-labelledby="quick-start-title">
+<p class="kicker">Your next conversation</p><h2 id="quick-start-title">Make it your workflow.</h2><p>Open the kit in Claude Code. Say “set me up”. The agent interviews you and creates the local files.</p>
+<div class="quickstart"><div class="terminal"><div class="terminal-top"><span>QUICK START</span><span>~/job-agent-kit</span></div><pre><code><span class="prompt">$</span> git clone https://github.com/LeiZiKang/job-agent-kit
+<span class="prompt">$</span> cd job-agent-kit
+<span class="prompt">$</span> claude
+
+<span class="prompt">You →</span> set me up</code></pre><p class="terminal-note">No config files to edit.</p></div></div>
+<div class="hero-links"><a class="button" href="https://github.com/LeiZiKang/job-agent-kit">Get the kit on GitHub <span aria-hidden="true">&nbsp;↗</span></a><a href="../">Explore the kit</a></div>
+<p class="requirements">Python 3.9+ for the offline tracker. Claude Code or another agent following AGENTS.md for the workflow. Codex follows the same rules.</p>
+</section>
+</main>
+<footer class="site-footer wrap"><p>job-agent-kit · <a href="https://github.com/LeiZiKang/job-agent-kit/blob/main/LICENSE">MIT</a></p><nav aria-label="Footer navigation"><a href="../">Home</a><a href="./index.md">Markdown</a><a href="../llms.txt">llms.txt</a><a href="https://github.com/LeiZiKang/job-agent-kit">GitHub</a></nav></footer>
+</body>
+</html>

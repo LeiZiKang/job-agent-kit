@@ -9,6 +9,12 @@ MIT-licensed, version 0.2.0. Python 3.9+ powers the offline tracker. Personal fi
 - [Chinese README](https://github.com/LeiZiKang/job-agent-kit/blob/main/README.zh-CN.md): Simplified Chinese introduction and setup.
 - [Agent operating manual](https://github.com/LeiZiKang/job-agent-kit/blob/main/CLAUDE.md): Red lines, tracker commands and weekly review.
 
+## On your Mac
+- [English walkthrough](https://leizikang.github.io/job-agent-kit/mac/): Six illustrated scenes from morning triage through scouting, human approval, a local board, Friday review and consent-based updates; fictional demo data.
+- [中文场景展示](https://leizikang.github.io/job-agent-kit/zh/mac/): 在 Mac 上从开工到复盘的六个场景，所有记录为假数据，对外动作由用户批准。
+- [English walkthrough in Markdown](https://leizikang.github.io/job-agent-kit/mac/index.md): Text version with the exact example funnel and data limitations.
+- [中文 Markdown 版](https://leizikang.github.io/job-agent-kit/zh/mac/index.md): 完整文字版，包含示例漏斗与数据缺口说明。
+
 ## Workflow and boundaries
 - [Architecture](https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/architecture.md): Lead agent, scouts, optional worker, tracker and execution boundary.
 - [Platform lessons](https://github.com/LeiZiKang/job-agent-kit/blob/main/docs/lessons.md): Observations from real use, not platform guarantees.

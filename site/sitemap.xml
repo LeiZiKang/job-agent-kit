@@ -12,4 +12,16 @@
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://leizikang.github.io/job-agent-kit/zh/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://leizikang.github.io/job-agent-kit/" />
   </url>
+  <url>
+    <loc>https://leizikang.github.io/job-agent-kit/mac/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://leizikang.github.io/job-agent-kit/mac/" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://leizikang.github.io/job-agent-kit/zh/mac/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://leizikang.github.io/job-agent-kit/mac/" />
+  </url>
+  <url>
+    <loc>https://leizikang.github.io/job-agent-kit/zh/mac/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://leizikang.github.io/job-agent-kit/mac/" />
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://leizikang.github.io/job-agent-kit/zh/mac/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://leizikang.github.io/job-agent-kit/mac/" />
+  </url>
 </urlset>

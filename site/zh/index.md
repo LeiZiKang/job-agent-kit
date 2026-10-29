@@ -23,6 +23,8 @@ Agent 会访谈你，生成所需的本地文件。 **无需手动编辑配置�
 
 离线跟踪器需要 Python 3.9+。求职流程使用 Claude Code 或遵循 AGENTS.md 的 Agent；Codex 读取相同规则。
 
+看看[在 Mac 上的一天](./mac/)：从开工到周五复盘。
+
 ## Agent 会做什么
 
 ### 引导配置

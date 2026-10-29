@@ -23,6 +23,8 @@ The agent interviews you and creates your local files. **No config files to edit
 
 Python 3.9+ for the offline tracker. Claude Code or an agent following AGENTS.md for the workflow. Codex follows the same rules.
 
+See [a day on your Mac](./mac/): from the first conversation to Friday’s review.
+
 ## What the agent does
 
 ### Onboard
