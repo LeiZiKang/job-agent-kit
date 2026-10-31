@@ -7,11 +7,20 @@ An AI agent that runs your job search with you: it scouts, screens, tracks and d
 [简体中文](README.zh-CN.md)
 
 ## What it is
-An agent-driven repo. Clone it, open it in Claude Code, say "set me up". The agent interviews you and creates every local file. There are no config files to edit.
+An agent-driven repo. Paste the installation sentence below into your agent conversation. The agent interviews you and creates every local file. There are no config files to edit.
 
 ![Job board](docs/board.png)
 
 ## Quick start
+Install the [Claude desktop app](https://claude.ai/download) and open its Code tab, or use Claude Code. Paste this sentence to the agent:
+
+> Install job-agent-kit for me: download https://github.com/LeiZiKang/job-agent-kit to my computer, read its INSTALL.md, and walk me through setup.
+
+The agent reads INSTALL.md and guides setup, defaulting to `~/job-agent-kit`. It asks before installing Git or Python 3.9+ if needed.
+
+### Developer manual installation
+With Git, Python 3.9+ and the Claude Code CLI installed, run:
+
 ```bash
 git clone https://github.com/LeiZiKang/job-agent-kit
 cd job-agent-kit

@@ -7,9 +7,18 @@
 [English](README.md)
 
 ## 是什么
-一个由 Agent 驱动的仓库。克隆后用 Claude Code 打开，说“帮我配置”，Agent 会访谈你并生成本地文件，无需手改配置。
+一个由 Agent 驱动的仓库。把下面的安装语句贴给 Agent，Agent 会访谈你并生成本地文件，无需手改配置。
 
 ## 快速开始
+先安装 [Claude 桌面 App](https://claude.ai/download)，打开 Code 标签页；也可以使用 Claude Code。把下面这句话贴给 Agent：
+
+> 帮我安装 job-agent-kit：把 https://github.com/LeiZiKang/job-agent-kit 下载到本地，读里面的 INSTALL.md，然后一步步帮我配置。
+
+Agent 会读 INSTALL.md 并一步步引导你配置，默认下载到 `~/job-agent-kit`。需要安装 Git 或 Python 3.9+ 时会先征得你同意。
+
+### 开发者手动安装
+已安装 Git、Python 3.9+ 和 Claude Code CLI 时，可手动运行：
+
 ```bash
 git clone https://github.com/LeiZiKang/job-agent-kit
 cd job-agent-kit

@@ -3,6 +3,12 @@
 Newest first. The `update` skill shows the sections between your version and the latest one.
 
 ## Unreleased
+- One-sentence installation in both READMEs and bilingual pages, with copy controls,
+  plain-text drag data and manual-install links; INSTALL.md handles cross-folder sessions,
+  prerequisite consent, safe reuse, onboarding and uninstall instructions.
+- Mac walkthrough: six illustrative desktop app scenes with conversation sidebars,
+  collapsible tool calls, input areas and report/board previews; light/dark and mobile layouts.
+- Installation FAQ, Markdown pages and LLM documentation follow the new entry point.
 - Marketing site: dependency-free English and Chinese pages in `site/`, with Google SEO
   metadata, structured data, sitemap, social image and Agent SEO documentation.
 - GitHub Pages workflow regenerates `llms-full.txt` before deployment; runs on `main`

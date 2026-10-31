@@ -8,6 +8,9 @@ description: First-run setup for job-agent-kit. Interviews the user and creates 
 Goal: in one short conversation, leave the repo fully configured. The user never edits a file
 or runs a command. You do everything and show a summary at the end.
 
+Resolve all paths from the kit root, even if this session started elsewhere; use its absolute
+path for files and `cd "<kit>" && ...` for commands, never the original session folder.
+
 ## 1. Check the machine (silently, fix what you can)
 - `python3 --version` (3.9+). `python3 bin/jt.py init` creates `tracker.json`.
 - `command -v codex` and whether `/Applications/ChatGPT.app` contains codex-cli. Codex is optional.
@@ -23,6 +26,9 @@ or runs a command. You do everything and show a summary at the end.
    menu from `templates/outreach.md`; default: none).
 6. Agree on a manual start-day inbox preview check and a weekly review day. Do not recommend
    unattended scheduling; the legacy option is documented in `contrib/` for explicit requests only.
+
+Record the start-day check and review day in `.agent-memory/handoff.md`. For anything the user
+does not have yet (resume, projects, salary floor), write "not set" in the file and move on.
 
 Push back on vague answers ("any frontend role") with a concrete question. Facts you can read
 from the resume, do not ask.

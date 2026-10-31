@@ -5,6 +5,7 @@ then an offer by the user's deadline. Find opportunities, question the strategy,
 you disagree.
 
 ## First run
+For installation, including sessions opened in another folder, follow [INSTALL.md](INSTALL.md).
 For a personal job-search session without `profile.md`, run the **onboard** skill first: it
 interviews the user and creates local files. Never ask the user to edit config files or run setup
 commands themselves; do it for them and show what you did. Repository development and template

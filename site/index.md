@@ -12,12 +12,13 @@ An AI agent workflow kit for Claude Code / Codex that runs your job search with 
 
 ### Quick start
 
-```sh
-git clone https://github.com/LeiZiKang/job-agent-kit
-cd job-agent-kit
-claude
-# then say: set me up
-```
+Install the [Claude desktop app](https://claude.ai/download) and open its Code tab, or use Claude Code. Paste this sentence to the agent:
+
+> Install job-agent-kit for me: download https://github.com/LeiZiKang/job-agent-kit to my computer, read its INSTALL.md, and walk me through setup.
+
+The agent reads INSTALL.md and guides setup, defaulting to `~/job-agent-kit`. It asks before installing Git or Python 3.9+ if needed.
+
+[Developer manual installation](https://github.com/LeiZiKang/job-agent-kit/blob/main/README.md#developer-manual-installation)
 
 The agent interviews you and creates your local files. **No config files to edit.**
 
@@ -105,6 +106,10 @@ The session-start check runs at most once a week. It fetches release information
 Say `update the kit` to use the [update skill](https://github.com/LeiZiKang/job-agent-kit/tree/main/.claude/skills/update). The agent explains the changes and installs only after you agree. Personal data is git-ignored; keep personal rules in `CLAUDE.local.md`.
 
 ## Before you start
+
+### How do I install it?
+
+Install the Claude desktop app and open the Code tab, or use Claude Code. Then paste to the agent: Install job-agent-kit for me: download https://github.com/LeiZiKang/job-agent-kit to my computer, read its INSTALL.md, and walk me through setup.
 
 ### Is it free?
 

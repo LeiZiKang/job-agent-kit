@@ -31,7 +31,8 @@
 <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="stylesheet" href="../assets/style.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"job-agent-kit","description":"为 Claude Code 和 Codex 准备的开源求职工具包：搜岗、初筛、跟踪与每周复盘。对外动作由你批准，个人数据保存在本地。MIT 许可。","codeRepository":"https://github.com/LeiZiKang/job-agent-kit","programmingLanguage":["Python","Shell"],"license":"https://github.com/LeiZiKang/job-agent-kit/blob/main/LICENSE","version":"0.2.0","url":"https://leizikang.github.io/job-agent-kit/zh/"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"zh-CN","mainEntity":[{"@type":"Question","name":"免费吗？","acceptedAnswer":{"@type":"Answer","text":"工具包以 MIT 许可证开源。求职流程需要 Claude Code 或遵循 AGENTS.md 的其他 Agent；离线跟踪器需要 Python 3.9+。"}},{"@type":"Question","name":"会自动海投吗？","acceptedAnswer":{"@type":"Answer","text":"不会。工具包不含自动海投机器人。你需要批准具体对象和原文，除非已在 outreach.md 中预先批准该动作类型。跟踪器只记录动作，不会投递申请或发送消息。"}},{"@type":"Question","name":"支持哪些 Agent？","acceptedAnswer":{"@type":"Answer","text":"可以用 Claude Code 开始，也支持通过 AGENTS.md 读取相同操作规则的 Codex。独立的 Codex worker 是可选的，引导配置和跟踪都不需要它。"}},{"@type":"Question","name":"我的数据放在哪里？","acceptedAnswer":{"@type":"Answer","text":"个人资料、外联规则、跟踪器和项目记忆都是本地文件，并被 git 忽略。个人规则写在 CLAUDE.local.md，避免与工具包更新冲突。跟踪器可离线运行，浏览使用 Agent 会话已有的浏览器工具。"}},{"@type":"Question","name":"可以用于国内招聘平台吗？","acceptedAnswer":{"@type":"Answer","text":"使用会话已有的浏览器工具，并阅读 README 链接的分平台教训。流程会按你的 profile 筛选渠道，但不承诺兼容所有平台。平台条款仍然适用，打开未读聊天仍需你批准。"}},{"@type":"Question","name":"如何更新？","acceptedAnswer":{"@type":"Answer","text":"开会话时，Agent 最多每周检查一次新版本，只 fetch，不安装。update skill 会解释变更，只有你同意后才安装；说“更新 kit”即可。个人规则保存在 CLAUDE.local.md。"}},{"@type":"Question","name":"会无人值守运行吗？","acceptedAnswer":{"@type":"Answer","text":"默认采用每天开工时手动检查一轮收件箱预览。不推荐无人值守巡检：它可能把消息变成已读却未回复，也可能因登录过期失效。旧调度脚本仅供明确选择的人使用。"}},{"@type":"Question","name":"可选 worker 有沙箱保护吗？","acceptedAnswer":{"@type":"Answer","text":"现有 Codex runner 使用 --dangerously-bypass-approvals-and-sandbox，提示词规则不是技术沙箱。只有在你明确批准、另有约束的环境中才使用，并核验它的输出。worker 不是必需组件。"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"zh-CN","mainEntity":[{"@type":"Question","name":"如何安装？","acceptedAnswer":{"@type":"Answer","text":"先安装 Claude 桌面 App 并打开 Code 标签页，或使用 Claude Code，然后贴给 Agent：帮我安装 job-agent-kit：把 https://github.com/LeiZiKang/job-agent-kit 下载到本地，读里面的 INSTALL.md，然后一步步帮我配置。"}},{"@type":"Question","name":"免费吗？","acceptedAnswer":{"@type":"Answer","text":"工具包以 MIT 许可证开源。求职流程需要 Claude Code 或遵循 AGENTS.md 的其他 Agent；离线跟踪器需要 Python 3.9+。"}},{"@type":"Question","name":"会自动海投吗？","acceptedAnswer":{"@type":"Answer","text":"不会。工具包不含自动海投机器人。你需要批准具体对象和原文，除非已在 outreach.md 中预先批准该动作类型。跟踪器只记录动作，不会投递申请或发送消息。"}},{"@type":"Question","name":"支持哪些 Agent？","acceptedAnswer":{"@type":"Answer","text":"可以用 Claude Code 开始，也支持通过 AGENTS.md 读取相同操作规则的 Codex。独立的 Codex worker 是可选的，引导配置和跟踪都不需要它。"}},{"@type":"Question","name":"我的数据放在哪里？","acceptedAnswer":{"@type":"Answer","text":"个人资料、外联规则、跟踪器和项目记忆都是本地文件，并被 git 忽略。个人规则写在 CLAUDE.local.md，避免与工具包更新冲突。跟踪器可离线运行，浏览使用 Agent 会话已有的浏览器工具。"}},{"@type":"Question","name":"可以用于国内招聘平台吗？","acceptedAnswer":{"@type":"Answer","text":"使用会话已有的浏览器工具，并阅读 README 链接的分平台教训。流程会按你的 profile 筛选渠道，但不承诺兼容所有平台。平台条款仍然适用，打开未读聊天仍需你批准。"}},{"@type":"Question","name":"如何更新？","acceptedAnswer":{"@type":"Answer","text":"开会话时，Agent 最多每周检查一次新版本，只 fetch，不安装。update skill 会解释变更，只有你同意后才安装；说“更新 kit”即可。个人规则保存在 CLAUDE.local.md。"}},{"@type":"Question","name":"会无人值守运行吗？","acceptedAnswer":{"@type":"Answer","text":"默认采用每天开工时手动检查一轮收件箱预览。不推荐无人值守巡检：它可能把消息变成已读却未回复，也可能因登录过期失效。旧调度脚本仅供明确选择的人使用。"}},{"@type":"Question","name":"可选 worker 有沙箱保护吗？","acceptedAnswer":{"@type":"Answer","text":"现有 Codex runner 使用 --dangerously-bypass-approvals-and-sandbox，提示词规则不是技术沙箱。只有在你明确批准、另有约束的环境中才使用，并核验它的输出。worker 不是必需组件。"}}]}</script>
+<script src="../assets/install.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">跳到正文</a>
@@ -52,15 +53,13 @@
     <div class="hero-links"><a class="button" href="https://github.com/LeiZiKang/job-agent-kit">在 GitHub 获取 <span aria-hidden="true">&nbsp;↗</span></a><a href="#workflow">了解工作流程 ↓</a></div>
   </div>
   <div class="quickstart">
-    <div class="terminal">
-      <div class="terminal-top"><span>快速开始</span><span aria-hidden="true">~/job-agent-kit</span></div>
-      <pre><code><span class="prompt">$</span> git clone https://github.com/LeiZiKang/job-agent-kit
-<span class="prompt">$</span> cd job-agent-kit
-<span class="prompt">$</span> claude
-
-<span class="prompt">你 →</span> set me up（帮我配置）</code></pre>
-      <p class="terminal-note">Agent 会访谈你，生成所需的本地文件。<br><strong>无需手动编辑配置。</strong></p>
+    <div class="install-card">
+      <p class="install-label">一句话开始</p>
+      <p class="install-instruction">先安装 <a href="https://claude.ai/download">Claude 桌面 App</a>，打开 Code 标签页；也可以使用 Claude Code。把这句话贴给 Agent：</p>
+      <p class="install-prompt" id="install-prompt" draggable="true" tabindex="0">帮我安装 job-agent-kit：把 https://github.com/LeiZiKang/job-agent-kit 下载到本地，读里面的 INSTALL.md，然后一步步帮我配置。</p>
+      <div class="copy-row"><button type="button" class="copy-install" hidden data-copied="已复制" data-failed="文字已选中，请手动复制。" aria-controls="install-prompt">复制</button><span class="copy-status" role="status" aria-live="polite"></span></div>
     </div>
+    <p class="manual-install"><a href="https://github.com/LeiZiKang/job-agent-kit/blob/main/README.zh-CN.md#开发者手动安装">开发者手动安装</a></p>
     <p class="requirements">离线跟踪器需要 Python 3.9+。求职流程使用 Claude Code 或遵循 AGENTS.md 的 Agent；Codex 读取相同规则。</p>
   </div>
 </section>
@@ -122,6 +121,7 @@
 <section class="section" id="faq" aria-labelledby="faq-title">
 <div class="section-heading"><span class="section-no">06 /</span><h2 id="faq-title">常见问题</h2></div>
 <div class="faq">
+<details><summary>如何安装？</summary><p>先安装 Claude 桌面 App 并打开 Code 标签页，或使用 Claude Code，然后贴给 Agent：帮我安装 job-agent-kit：把 https://github.com/LeiZiKang/job-agent-kit 下载到本地，读里面的 INSTALL.md，然后一步步帮我配置。</p></details>
 <details><summary>免费吗？</summary><p>工具包以 MIT 许可证开源。求职流程需要 Claude Code 或遵循 AGENTS.md 的其他 Agent；离线跟踪器需要 Python 3.9+。</p></details>
 <details><summary>会自动海投吗？</summary><p>不会。工具包不含自动海投机器人。你需要批准具体对象和原文，除非已在 outreach.md 中预先批准该动作类型。跟踪器只记录动作，不会投递申请或发送消息。</p></details>
 <details><summary>支持哪些 Agent？</summary><p>可以用 Claude Code 开始，也支持通过 AGENTS.md 读取相同操作规则的 Codex。独立的 Codex worker 是可选的，引导配置和跟踪都不需要它。</p></details>

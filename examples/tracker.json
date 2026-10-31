@@ -15,7 +15,10 @@
       "last_checked_at": "2026-10-13T09:00:00+00:00",
       "next_action": "Prep system design round Oct 16",
       "notes": "",
-      "legacy_ref": ""
+      "legacy_ref": "",
+      "source": "recruiter",
+      "replied_at": "2026-10-01",
+      "interview_at": "2026-10-05"
     },
     {
       "id": "contoso-ios",
@@ -30,7 +33,10 @@
       "last_checked_at": "2026-10-13T09:00:00+00:00",
       "next_action": "Follow up Oct 8 (T4)",
       "notes": "",
-      "legacy_ref": ""
+      "legacy_ref": "",
+      "source": "scout",
+      "replied_at": "",
+      "interview_at": ""
     },
     {
       "id": "fabrikam-fs",
@@ -45,7 +51,10 @@
       "last_checked_at": "2026-10-13T09:00:00+00:00",
       "next_action": "Reply to recruiter salary question",
       "notes": "Recruiter asked expectations",
-      "legacy_ref": ""
+      "legacy_ref": "",
+      "source": "recruiter",
+      "replied_at": "2026-10-10",
+      "interview_at": ""
     },
     {
       "id": "tailspin-web",
@@ -60,7 +69,10 @@
       "last_checked_at": "2026-10-13T09:00:00+00:00",
       "next_action": "",
       "notes": "Wanted 5y React Native",
-      "legacy_ref": ""
+      "legacy_ref": "",
+      "source": "scout",
+      "replied_at": "",
+      "interview_at": ""
     },
     {
       "id": "adatum-ref",
@@ -75,7 +87,10 @@
       "last_checked_at": "2026-10-13T09:00:00+00:00",
       "next_action": "Check in with Sam Oct 13",
       "notes": "",
-      "legacy_ref": ""
+      "legacy_ref": "",
+      "source": "referral",
+      "replied_at": "2026-10-08",
+      "interview_at": ""
     },
     {
       "id": "wingtip-mail",
@@ -90,7 +105,10 @@
       "last_checked_at": "2026-10-13T09:00:00+00:00",
       "next_action": "",
       "notes": "T6 cold email",
-      "legacy_ref": ""
+      "legacy_ref": "",
+      "source": "self",
+      "replied_at": "",
+      "interview_at": ""
     },
     {
       "id": "litware-fe",
@@ -105,7 +123,10 @@
       "last_checked_at": "2026-10-13T09:00:00+00:00",
       "next_action": "",
       "notes": "",
-      "legacy_ref": ""
+      "legacy_ref": "",
+      "source": "scout",
+      "replied_at": "",
+      "interview_at": ""
     },
     {
       "id": "proseware-sr",
@@ -120,7 +141,10 @@
       "last_checked_at": "2026-10-13T09:00:00+00:00",
       "next_action": "Waiting on user approval",
       "notes": "Tailored resume ready",
-      "legacy_ref": ""
+      "legacy_ref": "",
+      "source": "scout",
+      "replied_at": "",
+      "interview_at": ""
     }
   ],
   "seen_jobs": [

@@ -12,12 +12,13 @@ MIT 开源 / v0.2.0
 
 ### 快速开始
 
-```sh
-git clone https://github.com/LeiZiKang/job-agent-kit
-cd job-agent-kit
-claude
-# 然后说：set me up（帮我配置）
-```
+先安装 [Claude 桌面 App](https://claude.ai/download)，打开 Code 标签页；也可以使用 Claude Code。把下面这句话贴给 Agent：
+
+> 帮我安装 job-agent-kit：把 https://github.com/LeiZiKang/job-agent-kit 下载到本地，读里面的 INSTALL.md，然后一步步帮我配置。
+
+Agent 会读 INSTALL.md 并一步步引导你配置，默认下载到 `~/job-agent-kit`。需要安装 Git 或 Python 3.9+ 时会先征得你同意。
+
+[开发者手动安装](https://github.com/LeiZiKang/job-agent-kit/blob/main/README.zh-CN.md#开发者手动安装)
 
 Agent 会访谈你，生成所需的本地文件。 **无需手动编辑配置。**
 
@@ -105,6 +106,10 @@ v0.2.0 · 2026-10-28
 说 `更新 kit` 即可使用 [update skill](https://github.com/LeiZiKang/job-agent-kit/tree/main/.claude/skills/update)。Agent 会先解释变更，等你同意再安装。个人数据被 git 忽略，个人规则写在 `CLAUDE.local.md`。
 
 ## 常见问题
+
+### 如何安装？
+
+先安装 Claude 桌面 App 并打开 Code 标签页，或使用 Claude Code，然后贴给 Agent：帮我安装 job-agent-kit：把 https://github.com/LeiZiKang/job-agent-kit 下载到本地，读里面的 INSTALL.md，然后一步步帮我配置。
 
 ### 免费吗？
 

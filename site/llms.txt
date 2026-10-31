@@ -4,6 +4,17 @@
 
 MIT-licensed, version 0.2.0. Python 3.9+ powers the offline tracker. Personal files are local and git-ignored. No auto-apply bots are included. Exact targets and text require approval unless the user has pre-approved the action type. Platform terms still apply. The optional full-access worker is not a technical sandbox.
 
+## Installation
+Install the [Claude desktop app](https://claude.ai/download) and open its Code tab, or use Claude Code. Paste:
+
+Install job-agent-kit for me: download https://github.com/LeiZiKang/job-agent-kit to my computer, read its INSTALL.md, and walk me through setup.
+
+中文：
+
+帮我安装 job-agent-kit：把 https://github.com/LeiZiKang/job-agent-kit 下载到本地，读里面的 INSTALL.md，然后一步步帮我配置。
+
+Follow [INSTALL.md](https://github.com/LeiZiKang/job-agent-kit/blob/main/INSTALL.md) in the current session, even when it began outside the kit. Default to ~/job-agent-kit; ask before prerequisite installation or personal-file writes. Use Git, not ZIP, for update support.
+
 ## Start here
 - [English README](https://github.com/LeiZiKang/job-agent-kit/blob/main/README.md): Quick start, requirements, safety and qualified real-use figures.
 - [Chinese README](https://github.com/LeiZiKang/job-agent-kit/blob/main/README.zh-CN.md): Simplified Chinese introduction and setup.
