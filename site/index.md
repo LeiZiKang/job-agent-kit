@@ -2,7 +2,7 @@
 
 Homepage: https://leizikang.github.io/job-agent-kit/
 
-MIT licensed / v0.2.0
+MIT licensed / v0.3.0
 
 ## Your job search. With an agent at your side.
 
@@ -95,9 +95,9 @@ The optional worker uses a full-access CLI invocation. Prompt rules are not a sa
 
 ## Updates, with your agreement.
 
-v0.2.0 · 2026-10-28
+v0.3.0 · 2026-10-31
 
-Company duplicate checks, source-based funnels, reply and interview milestones, and a manual start-day routine.
+One-sentence install from the agent, INSTALL.md for any session folder, and a marketing site with a desktop app walkthrough.
 
 [Read the changelog ↗](https://github.com/LeiZiKang/job-agent-kit/blob/main/CHANGELOG.md)
 
@@ -145,4 +145,4 @@ The existing Codex runner uses --dangerously-bypass-approvals-and-sandbox. Writt
 
 ---
 
-[GitHub](https://github.com/LeiZiKang/job-agent-kit) · [MIT](https://github.com/LeiZiKang/job-agent-kit/blob/main/LICENSE) · v0.2.0
+[GitHub](https://github.com/LeiZiKang/job-agent-kit) · [MIT](https://github.com/LeiZiKang/job-agent-kit/blob/main/LICENSE) · v0.3.0

@@ -2,7 +2,7 @@
 
 > An AI agent workflow kit for Claude Code and Codex that scouts, screens, tracks and drafts for your job search, with your approval for outward actions.
 
-MIT-licensed, version 0.2.0. Python 3.9+ powers the offline tracker. Personal files are local and git-ignored. No auto-apply bots are included. Exact targets and text require approval unless the user has pre-approved the action type. Platform terms still apply. The optional full-access worker is not a technical sandbox.
+MIT-licensed, version 0.3.0. Python 3.9+ powers the offline tracker. Personal files are local and git-ignored. No auto-apply bots are included. Exact targets and text require approval unless the user has pre-approved the action type. Platform terms still apply. The optional full-access worker is not a technical sandbox.
 
 ## Installation
 Install the [Claude desktop app](https://claude.ai/download) and open its Code tab, or use Claude Code. Paste:

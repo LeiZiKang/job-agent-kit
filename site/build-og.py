@@ -69,7 +69,7 @@ def main():
     rect(0, 0, WIDTH, HEIGHT, "#f0eee6")
     rect(0, 0, 18, HEIGHT, "#a8502e")
     rect(80, 82, 12, 12, "#a8502e")
-    label("OPEN SOURCE / MIT / V0.2.0", 112, 78, 3, "#a8502e")
+    label("OPEN SOURCE / MIT / V0.3.0", 112, 78, 3, "#a8502e")
     label("JOB-AGENT-KIT", 80, 182, 12, "#141413")
     label("AI JOB SEARCH. YOU APPROVE.", 80, 314, 5, "#a8502e")
     rect(80, 399, 1040, 2, "#d8d3c4")

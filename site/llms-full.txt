@@ -132,7 +132,7 @@ Source: [CHANGELOG.md](https://github.com/LeiZiKang/job-agent-kit/blob/main/CHAN
 
 Newest first. The `update` skill shows the sections between your version and the latest one.
 
-## Unreleased
+## 0.3.0 — 2026-10-31
 - One-sentence installation in both READMEs and bilingual pages, with copy controls,
   plain-text drag data and manual-install links; INSTALL.md handles cross-folder sessions,
   prerequisite consent, safe reuse, onboarding and uninstall instructions.
@@ -141,8 +141,9 @@ Newest first. The `update` skill shows the sections between your version and the
 - Installation FAQ, Markdown pages and LLM documentation follow the new entry point.
 - Marketing site: dependency-free English and Chinese pages in `site/`, with Google SEO
   metadata, structured data, sitemap, social image and Agent SEO documentation.
-- GitHub Pages workflow regenerates `llms-full.txt` before deployment; runs on `main`
-  pushes changing `site/**` or manual dispatch. Release version remains 0.2.0.
+- GitHub Pages workflow regenerates `llms-full.txt` before deployment; runs on `main` pushes
+  changing the site, README, CHANGELOG, CLAUDE.md or docs, or by manual dispatch.
+- Demo tracker has fictional source, reply and interview fields, so the demo funnel is consistent.
 
 ## 0.2.0 — 2026-10-28
 - Tracker: `company` duplicate check, `apply --same-company-ok`, `--source` (scout / pirate /

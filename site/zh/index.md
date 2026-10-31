@@ -2,7 +2,7 @@
 
 首页：https://leizikang.github.io/job-agent-kit/zh/
 
-MIT 开源 / v0.2.0
+MIT 开源 / v0.3.0
 
 ## 你的求职， 有 Agent 一起跑。
 
@@ -95,9 +95,9 @@ Agent 会访谈你，生成所需的本地文件。 **无需手动编辑配置�
 
 ## 更新之前，先征得你同意。
 
-v0.2.0 · 2026-10-28
+v0.3.0 · 2026-10-31
 
-公司查重、按来源看漏斗、真人回复与面试里程碑，以及手动开工检查。
+对 Agent 说一句话即可安装，INSTALL.md 适配任意会话文件夹，并新增宣传网站和桌面 App 使用演示。
 
 [阅读更新记录 ↗](https://github.com/LeiZiKang/job-agent-kit/blob/main/CHANGELOG.md)
 
@@ -145,4 +145,4 @@ v0.2.0 · 2026-10-28
 
 ---
 
-[GitHub](https://github.com/LeiZiKang/job-agent-kit) · [MIT](https://github.com/LeiZiKang/job-agent-kit/blob/main/LICENSE) · v0.2.0
+[GitHub](https://github.com/LeiZiKang/job-agent-kit) · [MIT](https://github.com/LeiZiKang/job-agent-kit/blob/main/LICENSE) · v0.3.0
